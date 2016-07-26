@@ -20,13 +20,14 @@ public class BaseController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        float xEuAngle = OVRCamera.eulerAngles.x - OVRCamera.parent.parent.rotation.eulerAngles.x;
-        float zEuAngle = OVRCamera.eulerAngles.z - OVRCamera.parent.parent.rotation.eulerAngles.z;
-
+        Vector3 parentAngle = OVRCamera.parent.parent.rotation.eulerAngles;
+        Vector3 centerAngle = OVRCamera.eulerAngles;
+        float xEuAngle = centerAngle.x -parentAngle.x;
+        float zEuAngle = centerAngle.z - parentAngle.z;
         transform.rotation = Quaternion.Euler(xEuAngle * xMult , 0 , zEuAngle * zMult);
 
 
-        transform.position = initPos;
+       // transform.position = initPos;
         /*
 
         if (transform.rotation.x != lastRot && transform.rotation.x - lastRot >= 0)
