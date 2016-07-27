@@ -1,33 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.VR;
+using System;
 
 public class BaseController : MonoBehaviour {
-
+    public bool isPaused;
     public Transform OVRCamera;
     public float xMult;
     public float zMult;
     float lastRot;
-    Vector3 initPos;
-    
+    Vector3 initRot;
+
+    Vector3 origCenterAngle;
+
+
+    // Use this for initialization
+    void Start () {
        
-	// Use this for initialization
-	void Start () {
-       
-        initPos = transform.position;
 
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        Vector3 parentAngle = OVRCamera.parent.parent.rotation.eulerAngles;
-        Vector3 centerAngle = OVRCamera.eulerAngles;
-        float xEuAngle = centerAngle.x -parentAngle.x;
-        float zEuAngle = centerAngle.z - parentAngle.z;
-        transform.rotation = Quaternion.Euler(xEuAngle * xMult , 0 , zEuAngle * zMult);
 
+        if (isPaused) { } else
+        {
+            CameraToTableRot();
 
-       // transform.position = initPos;
+        }
+
+        // transform.position = initPos;
         /*
 
         if (transform.rotation.x != lastRot && transform.rotation.x - lastRot >= 0)
@@ -43,6 +45,31 @@ public class BaseController : MonoBehaviour {
         }
         lastRot = transform.rotation.eulerAngles.x;*/
 
+
+    }
+
+
+    private void CameraToTableRot()
+    { 
+        Vector3 centerAngle = OVRCamera.eulerAngles;
+        float xEuAngle = centerAngle.x - origCenterAngle.x;
+        float zEuAngle = centerAngle.z - origCenterAngle.z;
+        Vector3 euAngle = new Vector3(xEuAngle,0,zEuAngle);
+        //Vector3 thisRot = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(initRot + euAngle);
+
+        //transform.rotation = Quaternion.Euler(xEuAngle * xMult, 0, zEuAngle * zMult);
+    }
+
+    public void Pause() {
+        isPaused = true;
+    }
+
+    public void UnPause()
+    {
+        isPaused = false;
+        origCenterAngle = OVRCamera.eulerAngles;
+        initRot = transform.rotation.eulerAngles;
 
     }
 }
