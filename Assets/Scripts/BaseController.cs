@@ -54,7 +54,7 @@ public class BaseController : MonoBehaviour {
         Vector3 centerAngle = OVRCamera.eulerAngles;
         float xEuAngle = centerAngle.x - origCenterAngle.x;
         float zEuAngle = centerAngle.z - origCenterAngle.z;
-        Vector3 euAngle = new Vector3(xEuAngle,0,zEuAngle);
+        Vector3 euAngle = new Vector3(xEuAngle*xMult,0,zEuAngle);
         //Vector3 thisRot = transform.rotation.eulerAngles;
         transform.rotation = Quaternion.Euler(initRot + euAngle);
 
