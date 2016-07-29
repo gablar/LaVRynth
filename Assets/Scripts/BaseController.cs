@@ -29,22 +29,6 @@ public class BaseController : MonoBehaviour {
 
         }
 
-        // transform.position = initPos;
-        /*
-
-        if (transform.rotation.x != lastRot && transform.rotation.x - lastRot >= 0)
-        {
-            transform.Translate(transform.up * -yTransform);
-        }
-
-
-        if (transform.rotation.y != lastRot && transform.rotation.x - lastRot <= 0)
-        {
-            transform.Translate(transform.up * yTransform);
-
-        }
-        lastRot = transform.rotation.eulerAngles.x;*/
-
 
     }
 

@@ -2,49 +2,76 @@
 using System.Collections;
 
 public class PauseController : MonoBehaviour {
-    public bool isPaused =true;
+    
+    public bool isPaused = true;
+
+    //Base
     public BaseController basController;
-    private Rigidbody tableRGB;
+   
+
+    //ball
     GameObject ball;
-    private Vector3 ballVelocity;
     Rigidbody ballRGB;
+
+    //UI
+    public GameObject ballGen;
     // Use this for initialization
     void Start () {
-        isPaused = true;
-        basController.Pause();
-        ball = GameObject.FindGameObjectWithTag("ball");
-        ballRGB = ball.GetComponent<Rigidbody>();
-        ballVelocity = ballRGB.velocity;
-        ballRGB.velocity = Vector3.zero;
-        ballRGB.isKinematic = false; ;
+        basController = GameObject.Find("base").GetComponent<BaseController>();
+        ballGen = GameObject.Find("BallGeneratorInteractable");
+
+        if (isPaused) PauseGame(); else UnPauseGame();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         if (Input.GetMouseButtonDown(0))
         {
             if (!isPaused)
             {
                 //pause
-                isPaused = true;
-                basController.Pause();
-                ball = GameObject.FindGameObjectWithTag("ball");
-                ballRGB = ball.GetComponent<Rigidbody>();
-                //ballVelocity = ballRGB.velocity;
-                // ballRGB.velocity = Vector3.zero;
-                //ballRGB.isKinematic = false;
-                ballRGB.constraints = RigidbodyConstraints.FreezeAll;
+                PauseGame();
 
             }
             else
             {
-                isPaused = false;
-                basController.UnPause();
-                //ballRGB.isKinematic = false;
-                ballRGB.constraints = RigidbodyConstraints.None;
-
-                //ballRGB.velocity = ballVelocity;
+                UnPauseGame();
             }
         }
 	}
+
+    private void UnPauseGame()
+    {
+        isPaused = false;
+
+        //unfreezebase
+        basController.UnPause();
+
+        //unfreezeball
+        ballRGB.constraints = RigidbodyConstraints.None;
+
+        //hide ball spawner
+        ballGen.SetActive(false);
+    }
+
+    private void PauseGame()
+    {
+        isPaused = true;
+
+        //Freeze table
+        basController.Pause();
+       
+        //Freeze Ball
+        ball = GameObject.FindGameObjectWithTag("ball");
+
+        if (ball)
+        {
+            ballRGB = ball.GetComponent<Rigidbody>();
+            ballRGB.constraints = RigidbodyConstraints.FreezeAll;
+        }
+
+        //Show ball spawner
+
+        ballGen.SetActive(true);
+    }
 }
