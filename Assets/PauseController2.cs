@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PauseController : MonoBehaviour {
+public class PauseController2 : MonoBehaviour {
     public bool isPaused =true;
     public BaseController basController;
     private Rigidbody tableRGB;
