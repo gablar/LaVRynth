@@ -4,11 +4,19 @@ using System.Collections;
 public class BallGeneratorController : MonoBehaviour {
     public Transform ball;
     public Transform SpawnLocation;
+
     Vector3 initScale;
-	// Use this for initialization
-	void Start () {
+    
+    public bool isPaused;
+    SphereCollider sCollider;
+    MeshRenderer mRend;
+
+    // Use this for initialization
+    void Start () {
         //GameObject ball =  GameObject.Find("ball");
         initScale = transform.localScale;
+        sCollider = GetComponent<SphereCollider>();
+        mRend = GetComponent<MeshRenderer>();
 
     }
 
@@ -38,5 +46,15 @@ public class BallGeneratorController : MonoBehaviour {
         }
     }
 
+    public void Pause() {
+        sCollider.enabled = false;
+        mRend.enabled = false;
+        isPaused = true;
+    }
 
+    public void UnPause() {
+        sCollider.enabled = true;
+        mRend.enabled = true;
+        isPaused = false;
+    }
 }

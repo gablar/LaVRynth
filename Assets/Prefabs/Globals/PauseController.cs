@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class PauseController : MonoBehaviour {
     
@@ -14,18 +15,22 @@ public class PauseController : MonoBehaviour {
     Rigidbody ballRGB;
 
     //UI
-    public GameObject ballGen;
+    public BallGeneratorController ballGen;
     // Use this for initialization
     void Start () {
         basController = GameObject.Find("base").GetComponent<BaseController>();
-        ballGen = GameObject.Find("BallGeneratorInteractable");
+        ballGen = GameObject.Find("BallGeneratorInteractable").GetComponent<BallGeneratorController>();
+        OVRTouchpad.Create();
+        OVRTouchpad.TouchHandler += HandleTouchHandler;
 
         if (isPaused) PauseGame(); else UnPauseGame();
     }
 
-    // Update is called once per frame
-    void Update () {
-        if (Input.GetMouseButtonDown(0))
+    private void HandleTouchHandler(object sender, EventArgs e)
+    {
+        OVRTouchpad.TouchArgs touchArgs = (OVRTouchpad.TouchArgs)e;
+        OVRTouchpad.TouchEvent touchEvent = touchArgs.TouchType;
+        if(touchArgs.TouchType == OVRTouchpad.TouchEvent.SingleTap)
         {
             if (!isPaused)
             {
@@ -38,6 +43,11 @@ public class PauseController : MonoBehaviour {
                 UnPauseGame();
             }
         }
+
+    }
+
+    // Update is called once per frame
+    void Update () {
 	}
 
     private void UnPauseGame()
@@ -51,7 +61,7 @@ public class PauseController : MonoBehaviour {
         ballRGB.constraints = RigidbodyConstraints.None;
 
         //hide ball spawner
-        ballGen.SetActive(false);
+        ballGen.UnPause();
     }
 
     private void PauseGame()
@@ -72,6 +82,6 @@ public class PauseController : MonoBehaviour {
 
         //Show ball spawner
 
-        ballGen.SetActive(true);
+        ballGen.Pause();
     }
 }
