@@ -11,15 +11,14 @@ public class PauseController : MonoBehaviour {
    
 
     //ball
-    GameObject ball;
-    Rigidbody ballRGB;
+    BallController ball;
 
     //UI
     public BallGeneratorController ballGen;
     // Use this for initialization
     void Start () {
-        basController = GameObject.Find("base").GetComponent<BaseController>();
-        ballGen = GameObject.Find("BallGeneratorInteractable").GetComponent<BallGeneratorController>();
+        //basController = GameObject.Find("base").GetComponent<BaseController>();
+        //ballGen = GameObject.Find("BallGeneratorInteractable").GetComponent<BallGeneratorController>();
         OVRTouchpad.Create();
         OVRTouchpad.TouchHandler += HandleTouchHandler;
 
@@ -58,7 +57,12 @@ public class PauseController : MonoBehaviour {
         basController.UnPause();
 
         //unfreezeball
-        ballRGB.constraints = RigidbodyConstraints.None;
+        ball = GameObject.FindGameObjectWithTag("ball").GetComponent<BallController>();
+        if (ball)
+        {
+            ball.UnPause();
+        }
+        
 
         //hide ball spawner
         ballGen.UnPause();
@@ -68,16 +72,15 @@ public class PauseController : MonoBehaviour {
     {
         isPaused = true;
 
-        //Freeze table
+        //Freeze base
         basController.Pause();
-       
+
         //Freeze Ball
-        ball = GameObject.FindGameObjectWithTag("ball");
+        ball = GameObject.FindGameObjectWithTag("ball").GetComponent<BallController>();
 
         if (ball)
         {
-            ballRGB = ball.GetComponent<Rigidbody>();
-            ballRGB.constraints = RigidbodyConstraints.FreezeAll;
+            ball.Pause();
         }
 
         //Show ball spawner
