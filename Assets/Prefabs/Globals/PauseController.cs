@@ -11,7 +11,9 @@ public class PauseController : MonoBehaviour {
    
 
     //ball
-    BallController ball;
+    GameObject ball;
+    Rigidbody ballRGB;
+    BallController ballController;
 
     //UI
     public BallGeneratorController ballGen;
@@ -57,10 +59,11 @@ public class PauseController : MonoBehaviour {
         basController.UnPause();
 
         //unfreezeball
-        ball = GameObject.FindGameObjectWithTag("ball").GetComponent<BallController>();
+        ball = GameObject.FindGameObjectWithTag("ball");
         if (ball)
         {
-            ball.UnPause();
+            ballController = ball.GetComponent<BallController>();
+            ballController.UnPause();
         }
         
 
@@ -76,11 +79,11 @@ public class PauseController : MonoBehaviour {
         basController.Pause();
 
         //Freeze Ball
-        ball = GameObject.FindGameObjectWithTag("ball").GetComponent<BallController>();
-
+        ball = GameObject.FindGameObjectWithTag("ball");
         if (ball)
         {
-            ball.Pause();
+            ballController = ball.GetComponent<BallController>();
+            ballController.Pause();
         }
 
         //Show ball spawner
