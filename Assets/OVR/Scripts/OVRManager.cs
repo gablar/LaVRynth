@@ -57,6 +57,11 @@ public class OVRManager : MonoBehaviour
 	/// </summary>
 	public static OVRTracker tracker { get; private set; }
 
+	/// <summary>
+	/// Gets a reference to the active OVRInput.
+	/// </summary>
+	public static OVRInput input { get; private set; }
+
 	private static bool _profileIsCached = false;
 	private static OVRProfile _profile;
 	/// <summary>
@@ -128,16 +133,6 @@ public class OVRManager : MonoBehaviour
 	public static event Action HMDLost;
 
 	/// <summary>
-	/// Occurs when an HMD is put on the user's head.
-	/// </summary>
-	public static event Action HMDMounted;
-
-	/// <summary>
-	/// Occurs when an HMD is taken off the user's head.
-	/// </summary>
-	public static event Action HMDUnmounted;
-
-	/// <summary>
 	/// Occurs when VR Focus is acquired.
 	/// </summary>
 	public static event Action VrFocusAcquired;
@@ -194,28 +189,6 @@ public class OVRManager : MonoBehaviour
 			_isHmdPresentCached = true;
 			_isHmdPresent = value;
 		}
-	}
-
-	/// <summary>
-	/// Gets the audio output device identifier.
-	/// </summary>
-	/// <description>
-	/// On Windows, this is a string containing the GUID of the IMMDevice for the Windows audio endpoint to use.
-	/// </description>
-	public static string audioOutId
-	{
-		get { return OVRPlugin.audioOutId; }
-	}
-
-	/// <summary>
-	/// Gets the audio input device identifier.
-	/// </summary>
-	/// <description>
-	/// On Windows, this is a string containing the GUID of the IMMDevice for the Windows audio endpoint to use.
-	/// </description>
-	public static string audioInId
-	{
-		get { return OVRPlugin.audioInId; }
 	}
 
 	private static bool _hasVrFocusCached = false;
@@ -444,19 +417,6 @@ public class OVRManager : MonoBehaviour
 		}
 	}
 
-	/// <summary>
-	/// If true, the CPU and GPU are currently throttled to save power and/or reduce the temperature.
-	/// </summary>
-	public static bool isPowerSavingActive
-	{
-		get {
-			if (!isHmdPresent)
-				return false;
-
-			return OVRPlugin.powerSaving;
-		}
-	}
-
 	[SerializeField]
 	private OVRManager.TrackingOrigin _trackingOriginType = OVRManager.TrackingOrigin.EyeLevel;
 	/// <summary>
@@ -498,29 +458,10 @@ public class OVRManager : MonoBehaviour
 	/// </summary>
     public bool isSupportedPlatform { get; private set; }
 
-	private static bool _isUserPresentCached = false;
-	private static bool _isUserPresent = false;
-	private static bool _wasUserPresent = false;
 	/// <summary>
 	/// True if the user is currently wearing the display.
 	/// </summary>
-	public bool isUserPresent
-	{
-		get {
-			if (!_isUserPresentCached)
-			{
-				_isUserPresentCached = true;
-				_isUserPresent = OVRPlugin.userPresent;
-			}
-
-			return _isUserPresent;
-		}
-
-		private set {
-			_isUserPresentCached = true;
-			_isUserPresent = value;
-		}
-	}
+	public bool isUserPresent { get { return OVRPlugin.userPresent; } }
 
 	private static bool prevAudioOutIdIsCached = false;
 	private static bool prevAudioInIdIsCached = false;
@@ -582,6 +523,8 @@ public class OVRManager : MonoBehaviour
 			display = new OVRDisplay();
 		if (tracker == null)
 			tracker = new OVRTracker();
+		if (input == null)
+			input = new OVRInput();
 
 		if (resetTrackerOnLoad)
 			display.RecenterPose();
@@ -645,38 +588,6 @@ public class OVRManager : MonoBehaviour
 		}
 
 		_wasHmdPresent = isHmdPresent;
-
-		// Dispatch HMD mounted events.
-
-		isUserPresent = OVRPlugin.userPresent;
-
-		if (_wasUserPresent && !isUserPresent)
-		{
-			try
-			{
-				if (HMDUnmounted != null)
-					HMDUnmounted();
-			}
-			catch (Exception e)
-			{
-				Debug.LogError("Caught Exception: " + e);
-			}
-		}
-
-		if (!_wasUserPresent && isUserPresent)
-		{
-			try
-			{
-				if (HMDMounted != null)
-					HMDMounted();
-			}
-			catch (Exception e)
-			{
-				Debug.LogError("Caught Exception: " + e);
-			}
-		}
-
-		_wasUserPresent = isUserPresent;
 
 		// Dispatch VR Focus events.
 
@@ -807,7 +718,7 @@ public class OVRManager : MonoBehaviour
 		_wasHSWDisplayed = isHSWDisplayed;
 
 		display.Update();
-		OVRInput.Update();
+		input.Update();
     }
 
 	/// <summary>
