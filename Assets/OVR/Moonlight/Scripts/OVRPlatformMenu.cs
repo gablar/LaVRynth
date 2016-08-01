@@ -43,22 +43,6 @@ public class OVRPlatformMenu : MonoBehaviour
 	/// </summary>
 	public float fixedDepth = 3.0f;
 
-	/// <summary>
-	/// The key code.
-	/// </summary>
-	public KeyCode keyCode = KeyCode.Escape;
-
-	public enum eHandler
-	{
-		ResetCursor,
-		ShowGlobalMenu,
-		ShowConfirmQuit,
-	};
-
-	public eHandler doubleTapHandler = eHandler.ResetCursor;
-	public eHandler shortPressHandler = eHandler.ShowConfirmQuit;
-	public eHandler longPressHandler = eHandler.ShowGlobalMenu;
-
 	private GameObject instantiatedCursorTimer = null;
 	private Material cursorTimerMaterial = null;
 	private float doubleTapDelay = 0.25f;
@@ -99,7 +83,7 @@ public class OVRPlatformMenu : MonoBehaviour
 	{
 		if ( waitForUp )
 		{
-			if ( !Input.GetKeyDown( keyCode ) && !Input.GetKey( keyCode ) )
+			if ( !Input.GetKeyDown( KeyCode.Escape ) && !Input.GetKey( KeyCode.Escape ) )
 			{
 				waitForUp = false;
 			}
@@ -109,7 +93,7 @@ public class OVRPlatformMenu : MonoBehaviour
 			}
 		}
 
-		if ( Input.GetKeyDown( keyCode ) )
+		if ( Input.GetKeyDown( KeyCode.Escape ) )
 		{
 			// just came down
 			downCount++;
@@ -120,7 +104,7 @@ public class OVRPlatformMenu : MonoBehaviour
 		}
 		else if ( downCount > 0 )
 		{
-			if ( Input.GetKey( keyCode ) )
+			if ( Input.GetKey( KeyCode.Escape ) )
 			{
 				if ( downCount <= upCount )
 				{
@@ -241,8 +225,6 @@ public class OVRPlatformMenu : MonoBehaviour
 	/// </summary>
 	void ShowConfirmQuitMenu()
 	{
-		ResetCursor();
-
 #if UNITY_ANDROID && !UNITY_EDITOR
 		Debug.Log("[PlatformUI-ConfirmQuit] Showing @ " + Time.time);
 		OVRManager.PlatformUIConfirmQuit();
@@ -260,16 +242,6 @@ public class OVRPlatformMenu : MonoBehaviour
 #endif
 	}
 
-	void DoHandler(eHandler handler)
-	{
-		if (handler == eHandler.ResetCursor)
-			ResetCursor ();
-		if (handler == eHandler.ShowConfirmQuit)
-			ShowConfirmQuitMenu ();
-		if (handler == eHandler.ShowGlobalMenu)
-			ShowGlobalMenu ();
-	}
-
 	/// <summary>
 	/// Tests for long-press and activates global platform menu when detected.
 	/// as per the Unity integration doc, the back button responds to "mouse 1" button down/up/etc
@@ -279,11 +251,18 @@ public class OVRPlatformMenu : MonoBehaviour
 #if UNITY_ANDROID
 		eBackButtonAction action = HandleBackButtonState();
 		if ( action == eBackButtonAction.DOUBLE_TAP )
-			DoHandler(doubleTapHandler);
+		{
+			ResetCursor();
+		}
 		else if ( action == eBackButtonAction.SHORT_PRESS )
-			DoHandler(shortPressHandler);
+		{
+			ResetCursor();
+			ShowConfirmQuitMenu();
+		}
 		else if ( action == eBackButtonAction.LONG_PRESS )
-			DoHandler(longPressHandler);
+		{
+			ShowGlobalMenu();
+		}
 #endif
 	}
 
