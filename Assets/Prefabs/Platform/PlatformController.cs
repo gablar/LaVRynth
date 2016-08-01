@@ -4,6 +4,7 @@ using System.Collections;
 public class PlatformController : MonoBehaviour {
     private bool isPaused = true;
     private Vector3 initScale;
+    public OVRCameraRig cameraRig;
 
     // Use this for initialization
     void Start () {
@@ -29,8 +30,13 @@ public class PlatformController : MonoBehaviour {
 
     public void OnSubmit()
     {
-       // if (!gameBall && isPaused)
-           
+       if (isPaused)
+        {
+            cameraRig.transform.position = transform.GetChild(0).position;
+            cameraRig.transform.rotation = transform.GetChild(0).rotation;
+
+        }
+            
     }
 
     public void Pause() {
