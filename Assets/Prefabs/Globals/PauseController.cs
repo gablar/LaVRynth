@@ -17,10 +17,13 @@ public class PauseController : MonoBehaviour {
 
     //UI
     public BallGeneratorController ballGen;
+    public PlatformController plat1;
+    public PlatformController plat2;
+    public PlatformController plat3;
+    public PlatformController plat4;
     // Use this for initialization
     void Start () {
-        //basController = GameObject.Find("base").GetComponent<BaseController>();
-        //ballGen = GameObject.Find("BallGeneratorInteractable").GetComponent<BallGeneratorController>();
+
         OVRTouchpad.Create();
         OVRTouchpad.TouchHandler += HandleTouchHandler;
 
@@ -69,6 +72,12 @@ public class PauseController : MonoBehaviour {
 
         //hide ball spawner
         ballGen.UnPause();
+
+        //disable platform interaction
+        plat1.UnPause();
+        plat2.UnPause();
+        plat3.UnPause();
+        plat4.UnPause();
     }
 
     private void PauseGame()
@@ -89,5 +98,11 @@ public class PauseController : MonoBehaviour {
         //Show ball spawner
 
         ballGen.Pause();
+
+        //Enable platform interaction
+        plat1.Pause();
+        plat2.Pause();
+        plat3.Pause();
+        plat4.Pause();
     }
 }
