@@ -5,6 +5,7 @@ public class PlatformController : MonoBehaviour {
     private bool isPaused = true;
     private Vector3 initScale;
     public OVRCameraRig cameraRig;
+    ScreenFader fader;
 
     // Use this for initialization
     void Start () {
@@ -31,7 +32,7 @@ public class PlatformController : MonoBehaviour {
     public void OnSubmit()
     {
        if (isPaused)
-        {
+        {   //fader.fadeIn = 
             cameraRig.transform.position = transform.GetChild(0).position;
             cameraRig.transform.rotation = transform.GetChild(0).rotation;
 
