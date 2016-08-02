@@ -10,6 +10,7 @@ public class BaseController : MonoBehaviour {
     public float zMult;
     float lastRot;
     Vector3 initRot;
+    public int platform = 3;
 
     Vector3 origCenterAngle;
 
@@ -38,9 +39,29 @@ public class BaseController : MonoBehaviour {
         Vector3 centerAngle = OVRCamera.eulerAngles;
         float xEuAngle = centerAngle.x - origCenterAngle.x;
         float zEuAngle = centerAngle.z - origCenterAngle.z;
-        Vector3 euAngle = new Vector3(xEuAngle*xMult,0,zEuAngle);
-        //Vector3 thisRot = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(initRot + euAngle);
+        Vector3 euAngle;
+        switch(platform)
+        {
+            case 4:
+                euAngle = new Vector3(zEuAngle, 0, -xEuAngle * xMult);
+                transform.rotation = Quaternion.Euler(initRot + euAngle);
+                break;
+            case 3:
+                euAngle = new Vector3(xEuAngle * xMult, 0, zEuAngle);
+                transform.rotation = Quaternion.Euler(initRot + euAngle);
+                break;
+            case 2:
+                euAngle = new Vector3(-zEuAngle, 0, xEuAngle * xMult);
+                transform.rotation = Quaternion.Euler(initRot + euAngle); ;
+                break;
+            case 1:
+                euAngle = new Vector3(-xEuAngle * xMult, 0,- zEuAngle);
+                transform.rotation = Quaternion.Euler(initRot + euAngle);
+                break;
+            default:
+                break;
+        }
+
 
         //transform.rotation = Quaternion.Euler(xEuAngle * xMult, 0, zEuAngle * zMult);
     }

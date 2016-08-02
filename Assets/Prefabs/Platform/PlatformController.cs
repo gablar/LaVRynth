@@ -14,6 +14,7 @@ public class PlatformController : MonoBehaviour {
     bool fadingOut = true;
 
     public BaseController baseController;
+    public int platformNumber;
 
 
     // Use this for initialization
@@ -21,7 +22,7 @@ public class PlatformController : MonoBehaviour {
 
         initScale = transform.localScale;
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
-        SetAlpha(1);
+        SetAlpha(0);
         fadeSprite.gameObject.SetActive(false);
 
 
@@ -81,6 +82,7 @@ public class PlatformController : MonoBehaviour {
             {
                 cameraRig.transform.position = transform.GetChild(0).position;
                 cameraRig.transform.rotation = transform.GetChild(0).rotation;
+                baseController.platform = platformNumber;
                 fadingOut = false;
                 timer = 0;
             }
