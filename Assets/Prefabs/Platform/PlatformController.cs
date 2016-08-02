@@ -5,12 +5,25 @@ public class PlatformController : MonoBehaviour {
     private bool isPaused = true;
     private Vector3 initScale;
     public OVRCameraRig cameraRig;
-    ScreenFader fader;
+    public Transform fadeSprite;
+    SpriteRenderer spriteRend;
+    Color spriteColor;
+    public float repeatRate = .02f;
+    float timer = 0;
+    public float fadeTime = .5f;
+    bool fadingOut = true;
+
+    public BaseController baseController;
+
 
     // Use this for initialization
     void Start () {
 
         initScale = transform.localScale;
+        spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
+        SetAlpha(1);
+        fadeSprite.gameObject.SetActive(false);
+
 
     }
 
@@ -32,19 +45,82 @@ public class PlatformController : MonoBehaviour {
     public void OnSubmit()
     {
        if (isPaused)
-        {   //fader.fadeIn = 
-            cameraRig.transform.position = transform.GetChild(0).position;
-            cameraRig.transform.rotation = transform.GetChild(0).rotation;
+        {   //EnableSprite
+
+            fadeSprite.gameObject.SetActive(true);
+
+            //Set a to first value
+            InvokeRepeating("FadeOut", repeatRate, repeatRate);
+
+
+            //set a to second value
+            //set a to third value...
+            //when a reaches 1 execute camera movements(a must reach 1 at time t)
+            //set a to last value
+            //set a to second to last value...
+            //when a reaches 0 disable sprite
+
 
         }
             
     }
 
-    public void Pause() {
-        isPaused = true;
+
+
+    void FadeOut()
+    {   if (fadingOut)
+        {
+            timer += repeatRate;
+            //change according to the time elapsed
+            float percent = timer / fadeTime;
+            float aValue = Mathf.Lerp(0 , 1, percent);
+
+            SetAlpha(aValue);
+
+            if (aValue >= 1)
+            {
+                cameraRig.transform.position = transform.GetChild(0).position;
+                cameraRig.transform.rotation = transform.GetChild(0).rotation;
+                fadingOut = false;
+                timer = 0;
+            }
+        }
+        else {
+
+            timer += repeatRate;
+            float percent = timer / fadeTime;
+
+            float aValue = Mathf.Lerp(1 , 0 , percent);
+
+            SetAlpha(aValue);
+            
+
+            if (aValue <= 0) {
+                fadingOut = true;
+                fadeSprite.gameObject.SetActive(false);
+                CancelInvoke();
+
+
+            }
+
+
+        }
     }
 
-    public void UnPause() {
+    private void SetAlpha(float aValue)
+    {
+        spriteColor.a = aValue;
+        spriteRend.color = spriteColor;
+    }
+
+
+    public void Pause()
+    {
+        isPaused = true;
+    }
+    public void UnPause()
+    {
         isPaused = false;
     }
+
 }
