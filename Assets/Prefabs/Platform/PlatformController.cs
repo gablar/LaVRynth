@@ -3,17 +3,23 @@ using System.Collections;
 
 public class PlatformController : MonoBehaviour {
     private bool isPaused = true;
-    private Vector3 initScale;
-    public OVRCameraRig cameraRig;
+
     public Transform fadeSprite;
     SpriteRenderer spriteRend;
     Color spriteColor;
+
+    public OVRCameraRig cameraRig;
+    private Vector3 initScale;
     public float repeatRate = .02f;
     float timer = 0;
     public float fadeTime = .5f;
     bool fadingOut = true;
 
     public BaseController baseController;
+    public int platformNumber;
+
+    AudioSource aSource;
+
 
 
     // Use this for initialization
@@ -21,9 +27,9 @@ public class PlatformController : MonoBehaviour {
 
         initScale = transform.localScale;
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
-        SetAlpha(1);
+        SetAlpha(0);
         fadeSprite.gameObject.SetActive(false);
-
+        aSource = GetComponent<AudioSource>();
 
     }
 
@@ -48,18 +54,9 @@ public class PlatformController : MonoBehaviour {
         {   //EnableSprite
 
             fadeSprite.gameObject.SetActive(true);
-
+            aSource.Play();
             //Set a to first value
             InvokeRepeating("FadeOut", repeatRate, repeatRate);
-
-
-            //set a to second value
-            //set a to third value...
-            //when a reaches 1 execute camera movements(a must reach 1 at time t)
-            //set a to last value
-            //set a to second to last value...
-            //when a reaches 0 disable sprite
-
 
         }
             
@@ -81,6 +78,7 @@ public class PlatformController : MonoBehaviour {
             {
                 cameraRig.transform.position = transform.GetChild(0).position;
                 cameraRig.transform.rotation = transform.GetChild(0).rotation;
+                baseController.platform = platformNumber;
                 fadingOut = false;
                 timer = 0;
             }
