@@ -5,11 +5,13 @@ public class BallController : MonoBehaviour {
     AudioSource audioSource;
     Rigidbody rgb;
     bool isMoving;
+    bool isPaused = true;
 	// Use this for initialization
 	void Start () {
         audioSource = GetComponent<AudioSource>();
         rgb = GetComponent<Rigidbody>();
         isMoving = false;
+        if (isPaused) Pause(); else UnPause();
 	}
 	
 	// Update is called once per frame
@@ -35,4 +37,14 @@ public class BallController : MonoBehaviour {
         
         
 	}
+
+    public void Pause() {
+        isPaused = true;
+        rgb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    public void UnPause() {
+        isPaused = false;
+        rgb.constraints = RigidbodyConstraints.None;
+    }
 }

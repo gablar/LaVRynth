@@ -79,7 +79,7 @@ public class GazeInputModule : PointerInputModule
 				EventSystem.current.SetSelectedGameObject(currentLookAtHandler);
 				gazeFraction = 0;   // added for progressCursor
 
-				ExecuteEvents.ExecuteHierarchy(currentLookAtHandler, pointerEventData, ExecuteEvents.pointerClickHandler);
+				ExecuteEvents.ExecuteHierarchy(currentLookAtHandler, pointerEventData, ExecuteEvents.submitHandler);
 				currentLookAtHandlerClickTime = float.MaxValue;
 							ExecuteEvents.ExecuteHierarchy(EventSystem.current.currentSelectedGameObject, pointerEventData, ExecuteEvents.deselectHandler);
 			}

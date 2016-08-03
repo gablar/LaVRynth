@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 
 internal static class OVRPlugin
 {
-	public static readonly System.Version wrapperVersion = new System.Version(1, 5, 0);
+	public static readonly System.Version wrapperVersion = new System.Version(1, 3, 0);
 
 	private static System.Version _version;
 	public static System.Version version
@@ -181,16 +181,8 @@ internal static class OVRPlugin
 
 	public enum PlatformUI
 	{
-		None = -1,
 		GlobalMenu = 0,
 		ConfirmQuit,
-        GlobalMenuTutorial,
-	}
-
-	public enum SystemRegion
-	{
-		Unspecified = 0,
-		Japan,
 	}
 
 	private enum Key
@@ -241,7 +233,6 @@ internal static class OVRPlugin
 		HasVrFocus,
 		ShouldQuit,
 		ShouldRecenter,
-		ShouldRecreateDistortionWindow,
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
@@ -414,21 +405,9 @@ internal static class OVRPlugin
 	public static bool headphonesPresent
 	{
 		get {
-			if (version >= OVRP_1_3_0.version)
-				return OVRP_1_3_0.ovrp_GetSystemHeadphonesPresent() == OVRPlugin.Bool.True;
-			else if (version >= OVRP_1_1_0.version)
+			if (version >= OVRP_1_1_0.version)
 				return OVRP_1_1_0.ovrp_GetHeadphonesPresent() == OVRPlugin.Bool.True;
 			return true;
-		}
-	}
-
-	public static SystemRegion systemRegion
-	{
-		get {
-			if (version >= OVRP_1_5_0.version)
-				return OVRP_1_5_0.ovrp_GetSystemRegion();
-			else
-				return SystemRegion.Unspecified;
 		}
 	}
 
@@ -636,27 +615,12 @@ internal static class OVRPlugin
 		get { return OVRP_0_1_0.ovrp_GetFloat(Key.VirtualTextureScale); }
 		set { OVRP_0_1_0.ovrp_SetFloat(Key.VirtualTextureScale, value); }
 	}
-
-	public static bool shouldRecreateDistortionWindow
-	{
-		get { return GetStatus(Status.ShouldRecreateDistortionWindow); }
-	}
 #endif
 
 	public static bool occlusionMesh
 	{
-		get {
-			if (version >= OVRP_1_3_0.version)
-				return OVRP_1_3_0.ovrp_GetEyeOcclusionMeshEnabled() == Bool.True;
-			else
-				return GetCap(Caps.OcclusionMesh);
-		}
-		set {
-			if (version >= OVRP_1_3_0.version)
-				OVRP_1_3_0.ovrp_SetEyeOcclusionMeshEnabled(ToBool(value));
-			else
-				SetCap(Caps.OcclusionMesh, value);
-		}
+		get { return GetCap(Caps.OcclusionMesh); }
+		set { SetCap(Caps.OcclusionMesh, value); }
 	}
 
 	public static BatteryStatus batteryStatus
@@ -1130,27 +1094,5 @@ internal static class OVRPlugin
 
 		[DllImport(pluginName, CallingConvention = CallingConvention.Cdecl)]
 		public static extern Bool ovrp_SetAppIgnoreVrFocus(Bool value);
-	}
-
-	private static class OVRP_1_3_0
-	{
-		public static readonly System.Version version = new System.Version(1, 3, 0);
-
-		[DllImport(pluginName, CallingConvention = CallingConvention.Cdecl)]
-		public static extern Bool ovrp_GetEyeOcclusionMeshEnabled();
-
-		[DllImport(pluginName, CallingConvention = CallingConvention.Cdecl)]
-		public static extern Bool ovrp_SetEyeOcclusionMeshEnabled(Bool value);
-
-		[DllImport(pluginName, CallingConvention = CallingConvention.Cdecl)]
-		public static extern Bool ovrp_GetSystemHeadphonesPresent();
-	}
-
-	private static class OVRP_1_5_0
-	{
-		public static readonly System.Version version = new System.Version(1, 5, 0);
-
-		[DllImport(pluginName, CallingConvention = CallingConvention.Cdecl)]
-		public static extern SystemRegion ovrp_GetSystemRegion();
 	}
 }
