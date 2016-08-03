@@ -17,10 +17,7 @@ public class PauseController : MonoBehaviour {
 
     //UI
     public BallGeneratorController ballGen;
-    public PlatformController plat1;
-    public PlatformController plat2;
-    public PlatformController plat3;
-    public PlatformController plat4;
+    public PlatformsController platforms;
     // Use this for initialization
     void Start () {
 
@@ -74,10 +71,7 @@ public class PauseController : MonoBehaviour {
         ballGen.UnPause();
 
         //disable platform interaction
-        plat1.UnPause();
-        plat2.UnPause();
-        plat3.UnPause();
-        plat4.UnPause();
+        platforms.gameObject.SetActive(false);
     }
 
     private void PauseGame()
@@ -100,9 +94,6 @@ public class PauseController : MonoBehaviour {
         ballGen.Pause();
 
         //Enable platform interaction
-        plat1.Pause();
-        plat2.Pause();
-        plat3.Pause();
-        plat4.Pause();
+        platforms.gameObject.SetActive(true);
     }
 }

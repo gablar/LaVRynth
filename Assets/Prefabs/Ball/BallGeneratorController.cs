@@ -6,7 +6,7 @@ public class BallGeneratorController : MonoBehaviour {
     public Transform SpawnLocation;
 
     Vector3 initScale;
-    
+    AudioSource aSource;
     public bool isPaused = true;
     SphereCollider sCollider;
     MeshRenderer mRend;
@@ -17,6 +17,7 @@ public class BallGeneratorController : MonoBehaviour {
         initScale = transform.localScale;
         sCollider = GetComponent<SphereCollider>();
         mRend = GetComponent<MeshRenderer>();
+        aSource = GetComponent<AudioSource>();
         if (isPaused) Pause(); else UnPause();
 
     }
@@ -40,7 +41,8 @@ public class BallGeneratorController : MonoBehaviour {
 
     public void OnSubmit() {
         GameObject gameBall = GameObject.FindGameObjectWithTag("ball");
-        if (!gameBall && isPaused) 
+        if (!gameBall && isPaused)
+            aSource.Play();
             Instantiate(ball,SpawnLocation.position, Quaternion.identity);
             
         
