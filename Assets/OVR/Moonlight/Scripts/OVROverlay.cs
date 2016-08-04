@@ -82,19 +82,6 @@ public class OVROverlay : MonoBehaviour
 #if !UNITY_ANDROID || UNITY_EDITOR
 		ApplyTexture();
 #endif
-
-		if (Input.GetKey (KeyCode.Joystick1Button0))
-		{
-			currentOverlayType = OverlayType.None;
-		}
-		else if (Input.GetKey (KeyCode.Joystick1Button1))
-		{
-			currentOverlayType = OverlayType.OverlayShowLod;
-		}
-		else
-		{
-			currentOverlayType = OverlayType.Overlay;
-		}
     }
 
     void OnRenderObject()
