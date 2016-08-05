@@ -10,6 +10,8 @@ public class BreakeableWall1 : MonoBehaviour {
     MeshRenderer mRend;
     Collider coll;
     AudioSource aSource;
+    public AudioClip tapClip;
+    public AudioClip breakedClip;
     public ParticleSystem pS;
 	// Use this for initialization
 	void Start () {
@@ -22,11 +24,14 @@ public class BreakeableWall1 : MonoBehaviour {
 
         if (ball.gameObject.tag == "ball")
         {
+            aSource.clip = tapClip;
+            aSource.Play();
             accumulatedDamage += ball.relativeVelocity.magnitude;
-            Debug.Log(accumulatedDamage);
+           
             pS.Play();
             if (accumulatedDamage >= maxAccDam)
-            {
+            {   
+                aSource.clip = breakedClip;
                 aSource.Play();
                 coll.enabled = false;
                 mRend.enabled = false;
