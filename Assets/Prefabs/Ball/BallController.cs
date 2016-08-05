@@ -17,20 +17,21 @@ public class BallController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         float mag = rgb.velocity.magnitude;
+        
 
-        if (isMoving)
+        if (isMoving && mag <6)
         {
-            audioSource.pitch = mag;
+            audioSource.pitch = mag/2;
         }
         else
         if (!isMoving && mag > 0)
         {
-            audioSource.Play();
             audioSource.pitch = mag;
+            audioSource.Play();
             isMoving = true;
         }
         else
-        if (isMoving  &&  mag==0) {
+        if (isMoving  &&  mag<=0) {
             audioSource.Stop();
             isMoving = false;
         }

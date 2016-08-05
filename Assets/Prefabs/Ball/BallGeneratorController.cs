@@ -11,6 +11,7 @@ public class BallGeneratorController : MonoBehaviour {
     SphereCollider sCollider;
     MeshRenderer mRend;
 
+
     // Use this for initialization
     void Start () {
         //GameObject ball =  GameObject.Find("ball");
@@ -23,11 +24,7 @@ public class BallGeneratorController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-        /*if (Input.GetMouseButtonDown(0)) {
-            Instantiate(ball,transform.position,Quaternion.identity);
-        }*/
-    }
+
 
     public void OnPointerEnter() {
 
