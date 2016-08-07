@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class BallGeneratorController : MonoBehaviour {
     public Transform ball;
@@ -38,11 +39,15 @@ public class BallGeneratorController : MonoBehaviour {
 
     public void OnSubmit() {
         GameObject gameBall = GameObject.FindGameObjectWithTag("ball");
-        if (!gameBall && isPaused)
+        if (!gameBall && isPaused) {
             aSource.Play();
             Instantiate(ball,SpawnLocation.position, Quaternion.identity);
-            
-        
+        }
+
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+
     }
 
     public void UnPause() {

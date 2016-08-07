@@ -28,14 +28,10 @@ public class SizeDownController : MonoBehaviour {
     {
         if (ball.gameObject.tag == "ball")
         {
-
-            anim.Stop();
-            bColl.enabled = false;
-            mRend.enabled = false;
+            DisableSizeDown();
 
             if (OnSizeDownUsed != null)
             {
-                Debug.Log("Size Down Used messege sent");
                 OnSizeDownUsed();
             }
 
@@ -43,15 +39,29 @@ public class SizeDownController : MonoBehaviour {
         }
     }
 
+    private void DisableSizeDown()
+    {
+        anim.SetBool("isActive", false);
+        bColl.enabled = false;
+        mRend.enabled = false;
+    }
+
+    private void EnableSizeDown()
+    {
+        bColl.enabled = true;
+        mRend.enabled = true;
+        anim.SetBool("isActive",true);
+
+    }
+
     void EndSizeDown()
     {
 
         if (OnSizeDownEnds != null)
-        {
-            Debug.Log("Size Down Ends messege sent");
-
+        { 
             OnSizeDownEnds();
         }
-        Destroy(gameObject);
+        Invoke("EnableSizeDown", 15);
     }
+
 }
