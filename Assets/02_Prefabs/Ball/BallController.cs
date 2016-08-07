@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class BallController : MonoBehaviour {
     AudioSource audioSource;
@@ -12,6 +13,7 @@ public class BallController : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
         rgb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        origScale = transform.localScale;
 
         isMoving = false;
         if (isPaused) Pause(); else UnPause();
@@ -60,12 +62,33 @@ public class BallController : MonoBehaviour {
         StarController.OnStarUsed += StarUsed;
         StarController.OnInmunityEnds += InmunityEnds;
 
+        SizeDownController.OnSizeDownUsed += SizeDownUsed;
+        SizeDownController.OnSizeDownEnds += SizeDownEnds;
+
     }
+
+
 
     void OnDisable()
     {
         StarController.OnStarUsed -= StarUsed;
         StarController.OnInmunityEnds -= InmunityEnds;
+
+        SizeDownController.OnSizeDownUsed -= SizeDownUsed;
+        SizeDownController.OnSizeDownEnds -= SizeDownEnds;
+    }
+
+
+    Vector3 origScale;
+    private void SizeDownEnds()
+    {
+
+        transform.localScale = origScale;
+    }
+
+    private void SizeDownUsed()
+    {
+        transform.localScale = origScale * 0.5f;
     }
 
     private void InmunityEnds()

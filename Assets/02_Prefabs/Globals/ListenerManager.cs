@@ -6,6 +6,7 @@ public class ListenerManager : MonoBehaviour {
 
     public AudioClip LevelMusic;
     public AudioClip inmunityMusic;
+    public AudioClip SizeDownMusic;
     AudioSource aSource;
 	// Use this for initialization
 	void Start () {
@@ -23,6 +24,10 @@ public class ListenerManager : MonoBehaviour {
         StarController.OnInmunityEnds += InmunityEnds;
 
 
+        SizeDownController.OnSizeDownUsed += SizeDownUsed;
+        SizeDownController.OnSizeDownEnds += SizeDownEnds;
+
+
     }
 
 
@@ -33,8 +38,24 @@ public class ListenerManager : MonoBehaviour {
         StarController.OnStarUsed -= StarUsed;
         StarController.OnInmunityEnds -= InmunityEnds;
 
+        SizeDownController.OnSizeDownUsed -= SizeDownUsed;
+        SizeDownController.OnSizeDownEnds -= SizeDownEnds;
 
 
+
+    }
+
+    private void SizeDownEnds()
+    {
+
+        aSource.clip = LevelMusic;
+        aSource.Play();
+    }
+
+    private void SizeDownUsed()
+    {
+        aSource.clip = SizeDownMusic;
+        aSource.Play();
     }
 
     private void InmunityEnds()
