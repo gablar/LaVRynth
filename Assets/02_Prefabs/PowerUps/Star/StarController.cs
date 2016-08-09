@@ -28,18 +28,16 @@ public class StarController : MonoBehaviour {
 	}
 
     void OnTriggerEnter(Collider ball) {
-        if (ball.gameObject.tag == "ball") {
-          
-            anim.Stop();
-            bColl.enabled = false;
-            mRend.enabled = false;
-             
+        if (ball.gameObject.tag == "ball")
+        {
+            DisableStar();
+
             if (OnStarUsed != null)
             {
                 OnStarUsed();
             }
 
-            Invoke("EndInmunity", inmunityTime);   
+            Invoke("EndInmunity", inmunityTime);
         }
     }
 
@@ -49,6 +47,24 @@ public class StarController : MonoBehaviour {
         {
             OnInmunityEnds();
         }
-        Destroy(gameObject);
+
+        Invoke("EnableStar", 15);
     }
+
+    private void DisableStar()
+    {
+        anim.SetBool("isActive", false);
+        bColl.enabled = false;
+        mRend.enabled = false;
+    }
+
+    private void EnableStar()
+    {
+        bColl.enabled = true;
+        mRend.enabled = true;
+        anim.SetBool("isActive", true);
+
+    }
+
+
 }
