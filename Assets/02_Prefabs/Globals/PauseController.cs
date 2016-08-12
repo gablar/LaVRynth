@@ -3,7 +3,10 @@ using System.Collections;
 using System;
 
 public class PauseController : MonoBehaviour {
-    
+    public delegate void PausePressed();
+    public static event PausePressed OnPausePressed;
+
+
     public bool isPaused = true;
 
     //Base
@@ -53,6 +56,12 @@ public class PauseController : MonoBehaviour {
 
     private void UnPauseGame()
     {
+        if (OnPausePressed != null)
+        {
+            OnPausePressed();
+        }
+
+
         isPaused = false;
 
         //unfreezebase
@@ -76,6 +85,11 @@ public class PauseController : MonoBehaviour {
 
     private void PauseGame()
     {
+        if (OnPausePressed != null)
+        {
+            OnPausePressed();
+        }
+
         isPaused = true;
 
         //Freeze base
