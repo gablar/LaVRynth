@@ -22,12 +22,14 @@ public class PauseController : MonoBehaviour {
     public BallGeneratorController ballGen;
     public PlatformsController platforms;
     // Use this for initialization
+
+    void Awake() {
+        //if (isPaused) PauseGame(); else UnPauseGame();
+    }
     void Start () {
 
         OVRTouchpad.Create();
         OVRTouchpad.TouchHandler += HandleTouchHandler;
-
-        if (isPaused) PauseGame(); else UnPauseGame();
     }
 
     private void HandleTouchHandler(object sender, EventArgs e)

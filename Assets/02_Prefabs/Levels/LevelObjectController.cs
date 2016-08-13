@@ -3,10 +3,18 @@ using System.Collections;
 using System;
 
 public class LevelObjectController : MonoBehaviour {
-    private bool isPaused = false;
+    private bool isPaused = true;
     private Vector3 initScale;
     AudioSource aSource;
     Animator anim;
+
+    public Transform laVR;
+    public int laVRNum;
+    static int currentLaVR = 1;
+
+    void Awake(){
+        anim = GetComponent<Animator>();
+    }
 
     // Use this for initialization
     void Start () {
@@ -23,31 +31,36 @@ public class LevelObjectController : MonoBehaviour {
 
     public void OnPointerEnter()
     {
-       
-
         if (isPaused)
         {
-            transform.localScale = initScale * 3.0f;
             anim.SetBool("isSpining", false);
+            transform.localScale = initScale * 3.0f;
+
         }
     }
 
     public void OnPointerExit()
     {
-
-
-        if (isPaused) {
-            transform.localScale = initScale;
+       
             anim.SetBool("isSpining", true);
-        }
+            transform.localScale = initScale;
+
+        
     }
 
     public void OnSubmit()
     {
 
-        Debug.Log("Submited");
+        transform.localScale = initScale;
+        transform.parent.GetChild(currentLaVR).gameObject.SetActive(false);
+        transform.parent.GetChild(currentLaVR-1).gameObject.SetActive(true);
+        Animator otherAnim = transform.parent.GetChild(currentLaVR - 1).GetComponent<Animator>();
+        otherAnim.SetBool("isSpining", true);
 
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        currentLaVR = laVRNum;
+
+        laVR.gameObject.SetActive(true);
+        gameObject.SetActive(false);
 
 
     }
@@ -56,7 +69,7 @@ public class LevelObjectController : MonoBehaviour {
     {
         PauseController.OnPausePressed += PausePressed;
 
-        anim = GetComponent<Animator>();
+        //anim.SetBool("isSpining", true);
 
     }
 
