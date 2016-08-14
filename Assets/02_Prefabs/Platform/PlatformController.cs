@@ -20,16 +20,27 @@ public class PlatformController : MonoBehaviour {
 
     AudioSource aSource;
 
-
-
-    // Use this for initialization
-    void Start () {
-
+    public bool isDefault;
+    void Awake() {
         initScale = transform.localScale;
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
         SetAlpha(0);
         fadeSprite.gameObject.SetActive(false);
         aSource = GetComponent<AudioSource>();
+    }
+    void OnEnable() {
+
+
+ 
+    }
+
+    // Use this for initialization
+    void Start () {
+        if (isDefault)
+        {
+            OnSubmit();
+        }
+
 
     }
 
@@ -94,6 +105,7 @@ public class PlatformController : MonoBehaviour {
                 fadingOut = true;
                 fadeSprite.gameObject.SetActive(false);
                 CancelInvoke();
+
 
 
             }

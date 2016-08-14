@@ -14,7 +14,7 @@ public class HoleController : MonoBehaviour {
 
 
     void OnTriggerEnter(Collider other) {
-        if (!isInmune)
+        if (!isInmune && other.gameObject.tag == "ball")
         {
             Destroy(other.gameObject);
             aSource.Play();
