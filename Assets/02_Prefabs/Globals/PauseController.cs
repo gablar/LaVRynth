@@ -3,7 +3,10 @@ using System.Collections;
 using System;
 
 public class PauseController : MonoBehaviour {
-    
+    public delegate void PausePressed();
+    public static event PausePressed OnPausePressed;
+
+
     public bool isPaused = true;
 
     //Base
@@ -19,12 +22,14 @@ public class PauseController : MonoBehaviour {
     public BallGeneratorController ballGen;
     public PlatformsController platforms;
     // Use this for initialization
+
+    void Awake() {
+        //if (isPaused) PauseGame(); else UnPauseGame();
+    }
     void Start () {
 
         OVRTouchpad.Create();
         OVRTouchpad.TouchHandler += HandleTouchHandler;
-
-        if (isPaused) PauseGame(); else UnPauseGame();
     }
 
     private void HandleTouchHandler(object sender, EventArgs e)
@@ -53,6 +58,12 @@ public class PauseController : MonoBehaviour {
 
     private void UnPauseGame()
     {
+        if (OnPausePressed != null)
+        {
+            OnPausePressed();
+        }
+
+
         isPaused = false;
 
         //unfreezebase
@@ -76,6 +87,11 @@ public class PauseController : MonoBehaviour {
 
     private void PauseGame()
     {
+        if (OnPausePressed != null)
+        {
+            OnPausePressed();
+        }
+
         isPaused = true;
 
         //Freeze base
