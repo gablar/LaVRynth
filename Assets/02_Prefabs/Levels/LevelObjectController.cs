@@ -18,23 +18,8 @@ public class LevelObjectController : MonoBehaviour {
     public bool isLocked = true;
 
     //fade
-    public Transform fadeSprite;
-    SpriteRenderer spriteRend;
-    Color spriteColor;
-    public OVRCameraRig cameraRig;
-    public float repeatRate = .02f;
-    float timer = 0;
-    public float fadeTime = .5f;
-    bool fadingOut = true;
-
-    public BaseController baseController;
-    public int platformNumber;
-
     void Awake(){
         anim = GetComponent<Animator>();
-        spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
-        SetAlpha(0);
-        fadeSprite.gameObject.SetActive(false);
     }
 
     // Use this for initialization
@@ -46,10 +31,6 @@ public class LevelObjectController : MonoBehaviour {
 
     }
 
-    // Update is called once per frame
-    void Update () {
-	
-	}
 
     public void OnPointerEnter()
     {
@@ -77,11 +58,11 @@ public class LevelObjectController : MonoBehaviour {
         if (isPaused && !isLocked)
         { 
             transform.localScale = initScale;//reset to regular scale
-
-            fadeSprite.gameObject.SetActive(true);
-            aSource.Play();
-            //Set a to first value
-            InvokeRepeating("FadeOut", repeatRate, repeatRate);
+            // get calling Lavrynth
+            LaVRynthController lv1 = transform.parent.GetChild(currentLaVR).GetComponent<LaVRynthController>();
+            lv1.StartFadeOut(laVRNum);
+            currentLaVR = laVRNum;
+            gameObject.SetActive(false);
 
 
         }
@@ -95,81 +76,11 @@ public class LevelObjectController : MonoBehaviour {
        
     }
 
-    void FadeOut()
-    {
-       
-        if (fadingOut)
-        {
-            timer += repeatRate;
-            //change according to the time elapsed
-            float percent = timer / fadeTime;
-            float aValue = Mathf.Lerp(0, 1, percent);
-
-            SetAlpha(aValue);
-
-            if (aValue >= 1)
-            {
-                
-
-                transform.parent.GetChild(currentLaVR - 1).gameObject.SetActive(true);
-                Animator otherAnim = transform.parent.GetChild(currentLaVR - 1).GetComponent<Animator>();
-                otherAnim.SetBool("isSpining", true);
-
-                transform.parent.GetChild(currentLaVR).gameObject.SetActive(false);
-                currentLaVR = laVRNum;
-
-                laVR.gameObject.SetActive(true);
-                gameObject.transform.GetChild(0).gameObject.SetActive(false);
-                gameObject.transform.GetChild(1).gameObject.SetActive(false);
-
-                //baseController.platform = platformNumber;
-                fadingOut = false;
-                timer = 0;
-            }
-        }
-        else
-        {
-            
-            timer += repeatRate;
-            float percent = timer / fadeTime;
-
-            float aValue = Mathf.Lerp(1, 0, percent);
-            SetAlpha(aValue);
-
-
-            if (aValue <= 0.1f)
-            {
-               
-
-                fadingOut = true;
-                fadeSprite.gameObject.SetActive(false);
-                CancelInvoke();
-                gameObject.transform.GetChild(0).gameObject.SetActive(true);
-                //gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                gameObject.SetActive(false);
-
-
-
-            }
-
-
-        }
-    }
-
-    private void SetAlpha(float aValue)
-    {
-        spriteColor.a = aValue;
-        spriteRend.color = spriteColor;
-    }
-
-
 
 
     void OnEnable()
     {
         PauseController.OnPausePressed += PausePressed;
-
-        //anim.SetBool("isSpining", true);
 
     }
 
@@ -177,7 +88,6 @@ public class LevelObjectController : MonoBehaviour {
     void OnDisable()
     {
         PauseController.OnPausePressed -= PausePressed;
-
     }
 
 

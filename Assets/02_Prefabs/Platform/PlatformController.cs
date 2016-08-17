@@ -28,18 +28,13 @@ public class PlatformController : MonoBehaviour {
         fadeSprite.gameObject.SetActive(false);
         aSource = GetComponent<AudioSource>();
     }
-    void OnEnable() {
-
-
- 
-    }
 
     // Use this for initialization
     void Start () {
-        if (isDefault)
+      /*  if (isDefault)
         {
             OnSubmit();
-        }
+        }*/
 
 
     }
