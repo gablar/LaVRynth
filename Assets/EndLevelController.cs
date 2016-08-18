@@ -19,7 +19,6 @@ public class EndLevelController : MonoBehaviour {
     void OnTriggerEnter(Collider ball) {
         
         if (ball.gameObject.tag == "ball") {
-            Debug.Log("is ball");
             levelToOpen.Unlock();
             aSource.Play();
             Destroy(ball.gameObject);
