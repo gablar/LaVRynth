@@ -5,12 +5,14 @@ using UnityEngine.SceneManagement;
 public class BallGeneratorController : MonoBehaviour {
     public Transform ball;
     public Transform SpawnLocation;
+    public Transform lavBase;
 
     Vector3 initScale;
     AudioSource aSource;
     public bool isPaused = true;
     SphereCollider sCollider;
     MeshRenderer mRend;
+   
 
 
     // Use this for initialization
@@ -41,6 +43,7 @@ public class BallGeneratorController : MonoBehaviour {
         GameObject gameBall = GameObject.FindGameObjectWithTag("ball");
         if (!gameBall && isPaused) {
             aSource.Play();
+            lavBase.rotation = Quaternion.identity;
             Instantiate(ball,SpawnLocation.position, Quaternion.identity);
         }
 
