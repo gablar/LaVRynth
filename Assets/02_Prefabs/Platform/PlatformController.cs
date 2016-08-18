@@ -15,6 +15,10 @@ public class PlatformController : MonoBehaviour {
     public float fadeTime = .5f;
     bool fadingOut = true;
 
+    MeshRenderer mesh;
+    public Material platform;
+    public Material hPlatform;
+
     public BaseController baseController;
     public int platformNumber;
 
@@ -22,6 +26,7 @@ public class PlatformController : MonoBehaviour {
 
     public bool isDefault;
     void Awake() {
+        mesh = GetComponent<MeshRenderer>();
         initScale = transform.localScale;
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
         SetAlpha(0);
@@ -43,19 +48,27 @@ public class PlatformController : MonoBehaviour {
     public void OnPointerEnter()
     {
 
-        if (isPaused) transform.localScale = initScale * 1.2f;
+        if (isPaused) {
+            transform.localScale = initScale * 1.4f;
+            mesh.material = hPlatform;
+        }
+            
     }
 
     public void OnPointerExit()
     {
-        if (isPaused) transform.localScale = initScale;
+        if (isPaused) {
+            transform.localScale = initScale;
+            mesh.material = platform;
+        }
     }
 
     public void OnSubmit()
     {
        if (isPaused)
         {   //EnableSprite
-
+            transform.localScale = initScale;
+            mesh.material = platform;
             fadeSprite.gameObject.SetActive(true);
             aSource.Play();
             //Set a to first value

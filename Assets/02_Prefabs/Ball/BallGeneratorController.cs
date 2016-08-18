@@ -12,6 +12,7 @@ public class BallGeneratorController : MonoBehaviour {
     public bool isPaused = true;
     SphereCollider sCollider;
     MeshRenderer mRend;
+
    
 
 
@@ -31,7 +32,7 @@ public class BallGeneratorController : MonoBehaviour {
 
     public void OnPointerEnter() {
 
-        if (isPaused) transform.localScale = initScale * 2.0f;
+        if (isPaused) { transform.localScale = initScale * 2.0f; }
     }
 
     public void OnPointerExit()
