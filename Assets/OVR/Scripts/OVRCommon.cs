@@ -109,6 +109,7 @@ public static class OVRExtensions
 /// <summary>
 /// An affine transformation built from a Unity position and orientation.
 /// </summary>
+[System.Serializable]
 public struct OVRPose
 {
 	/// <summary>
