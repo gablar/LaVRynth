@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlatformController : MonoBehaviour {
     private bool isPaused = true;
+    public bool isDefault;
+    public bool isFirst;
 
     public Transform fadeSprite;
     SpriteRenderer spriteRend;
@@ -24,7 +26,6 @@ public class PlatformController : MonoBehaviour {
 
     AudioSource aSource;
 
-    public bool isDefault;
     void Awake() {
         mesh = GetComponent<MeshRenderer>();
         initScale = transform.localScale;
@@ -36,10 +37,17 @@ public class PlatformController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-      /*  if (isDefault)
+        if (isDefault && isFirst)
         {
-            OnSubmit();
-        }*/
+            PlayerPrefs.SetFloat("CameraHeight", cameraRig.transform.position.y);
+            //OnSubmit();
+            isFirst = false;
+        }
+        else if (isDefault && !isFirst) {
+            cameraRig.transform.position = new Vector3(cameraRig.transform.position.x,
+                                                        PlayerPrefs.GetFloat("CameraHeight"),
+                                                        cameraRig.transform.position.z);
+        }
 
 
     }
@@ -92,7 +100,8 @@ public class PlatformController : MonoBehaviour {
 
             if (aValue >= 1)
             {
-                cameraRig.transform.position = transform.GetChild(0).position;
+                Vector3 position = transform.GetChild(0).position;
+                cameraRig.transform.position = new Vector3(position.x,PlayerPrefs.GetFloat("CameraHeight"),position.z);
                 cameraRig.transform.rotation = transform.GetChild(0).rotation;
                 baseController.platform = platformNumber;
                 fadingOut = false;
@@ -106,15 +115,12 @@ public class PlatformController : MonoBehaviour {
 
             float aValue = Mathf.Lerp(1 , 0 , percent);
 
-            SetAlpha(aValue);
-            
+            SetAlpha(aValue);         
 
             if (aValue <= 0) {
                 fadingOut = true;
                 fadeSprite.gameObject.SetActive(false);
-                CancelInvoke();
-
-
+                CancelInvoke("FadeOut");
 
             }
 

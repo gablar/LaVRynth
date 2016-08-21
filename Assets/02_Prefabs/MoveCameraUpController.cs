@@ -5,6 +5,8 @@ public class MoveCameraUpController : MonoBehaviour {
     public Material unSelected;
     public Material selected;
     MeshRenderer mRend;
+
+    public float cameraHeight;
 	// Use this for initialization
 	void Start () {
         mRend = GetComponent<MeshRenderer>();
