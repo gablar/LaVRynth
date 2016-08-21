@@ -5,7 +5,7 @@ using System;
 public class LevelObjectController : MonoBehaviour {
     private bool isPaused = true;
     private Vector3 initScale;
-    AudioSource aSource;
+    //AudioSource aSource;
     Animator anim;
 
     //LaVRynth assigned tto this levelObject
@@ -25,7 +25,7 @@ public class LevelObjectController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         initScale = transform.localScale;
-        aSource = GetComponent<AudioSource>();
+        //aSource = GetComponent<AudioSource>();
         if (!isLocked) Unlock();
         
 
