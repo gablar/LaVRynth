@@ -61,6 +61,7 @@ public class MenuController : MonoBehaviour {
 
         transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(1).gameObject.SetActive(true);
+        transform.GetChild(2).gameObject.SetActive(true);
     }
 
     void UnPause()
@@ -70,6 +71,7 @@ public class MenuController : MonoBehaviour {
 
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(false);
+        transform.GetChild(2).gameObject.SetActive(false);
 
     }
 }

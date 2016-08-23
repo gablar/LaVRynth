@@ -19,7 +19,7 @@ public class PauseController : MonoBehaviour {
     BallController ballController;
 
     //UI
-    public BallGeneratorController ballGen;
+
     public PlatformsController platforms;
     // Use this for initialization
 
@@ -78,8 +78,6 @@ public class PauseController : MonoBehaviour {
         }
         
 
-        //hide ball spawner
-        ballGen.UnPause();
 
         //disable platform interaction
         platforms.gameObject.SetActive(false);
@@ -105,9 +103,6 @@ public class PauseController : MonoBehaviour {
             ballController.Pause();
         }
 
-        //Show ball spawner
-
-        ballGen.Pause();
 
         //Enable platform interaction
         platforms.gameObject.SetActive(true);

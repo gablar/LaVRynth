@@ -10,7 +10,7 @@ public class BallGeneratorController : MonoBehaviour {
     Vector3 initScale;
     AudioSource aSource;
     public bool isPaused = true;
-    SphereCollider sCollider;
+    BoxCollider bCollider;
     MeshRenderer mRend;
 
    
@@ -20,10 +20,10 @@ public class BallGeneratorController : MonoBehaviour {
     void Start () {
         //GameObject ball =  GameObject.Find("ball");
         initScale = transform.localScale;
-        sCollider = GetComponent<SphereCollider>();
+        bCollider = GetComponent<BoxCollider>();
         mRend = GetComponent<MeshRenderer>();
         aSource = GetComponent<AudioSource>();
-        if (isPaused) Pause(); else UnPause();
+       // if (isPaused) Pause(); else UnPause();
 
     }
 
@@ -32,7 +32,7 @@ public class BallGeneratorController : MonoBehaviour {
 
     public void OnPointerEnter() {
 
-        if (isPaused) { transform.localScale = initScale * 2.0f; }
+        if (isPaused) { transform.localScale = initScale * 1.2f; }
     }
 
     public void OnPointerExit()
@@ -56,13 +56,13 @@ public class BallGeneratorController : MonoBehaviour {
 
     public void UnPause() {
         transform.localScale = initScale;
-        sCollider.enabled = false;
+        bCollider.enabled = false;
         mRend.enabled = false;
         isPaused = false;
     }
 
     public void Pause() {
-        sCollider.enabled = true;
+        bCollider.enabled = true;
         mRend.enabled = true;
         isPaused = true;
     }
