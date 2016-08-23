@@ -49,13 +49,17 @@ public class PlatformController : MonoBehaviour {
             bColl.enabled = false;
             isCurrentPlat = true;
         }
-        else if (isDefault && !isFirst) {
+        else if (isDefault && !isFirst)
+        {
             cameraRig.transform.position = new Vector3(cameraRig.transform.position.x,
                                                         PlayerPrefs.GetFloat("CameraHeight"),
                                                         cameraRig.transform.position.z);
             mesh.enabled = false;
             bColl.enabled = false;
             isCurrentPlat = true;
+        }
+        else {
+            isCurrentPlat = false;
         }
 
 
