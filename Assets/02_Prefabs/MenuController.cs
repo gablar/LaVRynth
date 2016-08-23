@@ -3,12 +3,13 @@ using System.Collections;
 
 public class MenuController : MonoBehaviour {
     private bool isPaused = true;
+    //All children must be set Active true on Pause;
     MeshRenderer mRend;
-    BoxCollider bColl;
+   
     // Use this for initialization
     void Start () {
         mRend = GetComponent<MeshRenderer>();
-        bColl = GetComponent<BoxCollider>();
+
     }
 
     // Update is called once per frame
@@ -41,7 +42,7 @@ public class MenuController : MonoBehaviour {
 
     private void PausePressed()
     {
-        if (isPaused)
+       /* if (isPaused)
         {
 
             UnPause();
@@ -50,21 +51,25 @@ public class MenuController : MonoBehaviour {
         {
 
             Pause();
-        }
+        }*/
     }
 
     void Pause()
     {
         isPaused = true;
         mRend.enabled = true;
-        bColl.enabled = true;
+
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);
     }
 
     void UnPause()
     {
         isPaused = false;
         mRend.enabled = false;
-        bColl.enabled = false;
-        
+
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
+
     }
 }

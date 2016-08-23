@@ -20,6 +20,7 @@ public class MoveCameraController : MonoBehaviour {
 
     public void OnPointerEnter()
     {
+        Debug.Log("Arrow OnPointerEnter");
         mRend.material = selected;
     }
 

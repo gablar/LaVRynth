@@ -5,6 +5,7 @@ public class PlatformController : MonoBehaviour {
     private bool isPaused = true;
     public bool isDefault;
     public bool isFirst;
+    public bool isCurrentPlat;
 
     public Transform fadeSprite;
     SpriteRenderer spriteRend;
@@ -20,6 +21,7 @@ public class PlatformController : MonoBehaviour {
     MeshRenderer mesh;
     public Material platform;
     public Material hPlatform;
+    BoxCollider bColl;
 
     public BaseController baseController;
     public int platformNumber;
@@ -28,6 +30,7 @@ public class PlatformController : MonoBehaviour {
 
     void Awake() {
         mesh = GetComponent<MeshRenderer>();
+        bColl = GetComponent<BoxCollider>();
         initScale = transform.localScale;
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
         SetAlpha(0);
@@ -42,11 +45,17 @@ public class PlatformController : MonoBehaviour {
             PlayerPrefs.SetFloat("CameraHeight", cameraRig.transform.position.y);
             //OnSubmit();
             isFirst = false;
+            mesh.enabled = false;
+            bColl.enabled = false;
+            isCurrentPlat = true;
         }
         else if (isDefault && !isFirst) {
             cameraRig.transform.position = new Vector3(cameraRig.transform.position.x,
                                                         PlayerPrefs.GetFloat("CameraHeight"),
                                                         cameraRig.transform.position.z);
+            mesh.enabled = false;
+            bColl.enabled = false;
+            isCurrentPlat = true;
         }
 
 
@@ -56,7 +65,7 @@ public class PlatformController : MonoBehaviour {
     public void OnPointerEnter()
     {
 
-        if (isPaused) {
+        if (isPaused && !isCurrentPlat) {
             transform.localScale = initScale * 1.4f;
             mesh.material = hPlatform;
         }
@@ -73,7 +82,7 @@ public class PlatformController : MonoBehaviour {
 
     public void OnSubmit()
     {
-       if (isPaused)
+       if (isPaused && !isCurrentPlat)
         {   //EnableSprite
             transform.localScale = initScale;
             mesh.material = platform;
@@ -99,10 +108,27 @@ public class PlatformController : MonoBehaviour {
             SetAlpha(aValue);
 
             if (aValue >= 1)
-            {
+            {   //change Camera to this platform
                 Vector3 position = transform.GetChild(0).position;
                 cameraRig.transform.position = new Vector3(position.x,PlayerPrefs.GetFloat("CameraHeight"),position.z);
                 cameraRig.transform.rotation = transform.GetChild(0).rotation;
+
+                //turn off Menu and turn on mesh and coll in the prior Platform
+                Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1); 
+                priorPlatform.GetChild(1).gameObject.SetActive(false);
+                priorPlatform.gameObject.GetComponent<MeshRenderer>().enabled = true;
+                priorPlatform.gameObject.GetComponent<BoxCollider>().enabled = true;
+                priorPlatform.gameObject.GetComponent<PlatformController>().isCurrentPlat = false;
+
+                
+                //turn on this Menu and turn off this platform mesh and coll
+
+                transform.GetChild(1).gameObject.SetActive(true);
+                mesh.enabled = false;
+                bColl.enabled = false;
+                isCurrentPlat = true;
+                //turn off this platforms mesh and coll
+
                 baseController.platform = platformNumber;
                 fadingOut = false;
                 timer = 0;
