@@ -34,16 +34,16 @@ public class MoveCameraController : MonoBehaviour {
         {
             float newHeight = PlayerPrefs.GetFloat("CameraHeight") + yMovement;
             PlayerPrefs.SetFloat("CameraHeight", newHeight);
-            cameraRig.transform.position = new Vector3(cameraRig.transform.position.x,
+            cameraRig.transform.localPosition = new Vector3(cameraRig.transform.localPosition.x,
                                                         newHeight,
-                                                        cameraRig.transform.position.z);
+                                                        cameraRig.transform.localPosition.z);
         }
         else {
             float newHeight = PlayerPrefs.GetFloat("CameraHeight") - yMovement;
             PlayerPrefs.SetFloat("CameraHeight", newHeight);
-            cameraRig.transform.position = new Vector3(cameraRig.transform.position.x,
+            cameraRig.transform.localPosition = new Vector3(cameraRig.transform.localPosition.x,
                                                         newHeight,
-                                                        cameraRig.transform.position.z);
+                                                        cameraRig.transform.localPosition.z);
         }
 
     }

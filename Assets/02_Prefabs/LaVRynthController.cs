@@ -10,6 +10,7 @@ public class LaVRynthController : MonoBehaviour {
     public float repeatRate = .02f;
     float timer = 0;
     public float fadeTime = .5f;
+    public OVRCameraRig cameraRig;
     AudioSource aSource;
 
     // Use this for initialization
@@ -77,6 +78,7 @@ public class LaVRynthController : MonoBehaviour {
         
         fadeSprite.gameObject.SetActive(true);
         SetAlpha(1);
+        cameraRig.transform.localPosition = new Vector3(cameraRig.transform.localPosition.x, PlayerPrefs.GetFloat("CameraHeight"), cameraRig.transform.localPosition.z);
         InvokeRepeating("FadeIn", repeatRate, repeatRate);
     }
 }

@@ -5,7 +5,7 @@ public class PlatformController : MonoBehaviour {
     private bool isPaused = true;
     public bool isDefault;
     public bool isFirst;
-    public bool isCurrentPlat;
+    
 
     public Transform fadeSprite;
     SpriteRenderer spriteRend;
@@ -29,8 +29,12 @@ public class PlatformController : MonoBehaviour {
     AudioSource aSource;
     Vector3 thisPosition;
 
+    /*Child 0 = Camera Position
+      Child 1 = Menu
+      Child 2 = Mesh*/
+
     void Awake() {
-        thisPosition = transform.GetChild(0).position;
+        thisPosition = new Vector3(transform.localPosition.x, transform.GetChild(0).localPosition.y, transform.localPosition.z);
         mesh = transform.GetChild(2).GetComponent<MeshRenderer>();
         bColl = GetComponent<BoxCollider>();
         initScale = transform.GetChild(2).localScale;
@@ -44,24 +48,21 @@ public class PlatformController : MonoBehaviour {
     void Start () {
         if (isDefault && isFirst)
         {
-            PlayerPrefs.SetFloat("CameraHeight", cameraRig.transform.position.y);
+            PlayerPrefs.SetFloat("CameraHeight", cameraRig.transform.localPosition.y);
             //OnSubmit();
             isFirst = false;
             mesh.enabled = false;
             bColl.enabled = false;
-            isCurrentPlat = true;
+
         }
         else if (isDefault && !isFirst)
         {
-            cameraRig.transform.position = new Vector3(thisPosition.x,
+            cameraRig.transform.localPosition = new Vector3(thisPosition.x,
                                                         PlayerPrefs.GetFloat("CameraHeight"),
                                                         thisPosition.z);
             mesh.enabled = false;
             bColl.enabled = false;
-            isCurrentPlat = true;
-        }
-        else {
-            isCurrentPlat = false;
+           // Debug.Log("Default platform initialized, Platform #" + platformNumber);
         }
 
 
@@ -71,7 +72,7 @@ public class PlatformController : MonoBehaviour {
     public void OnPointerEnter()
     {
 
-        if (isPaused && !isCurrentPlat) {
+        if (isPaused) {
             transform.GetChild(2).localScale = initScale * 1.2f;
             mesh.material = hPlatform;
         }
@@ -88,7 +89,7 @@ public class PlatformController : MonoBehaviour {
 
     public void OnSubmit()
     {
-       if (isPaused && !isCurrentPlat)
+       if (isPaused)
         {   //EnableSprite
             transform.GetChild(2).localScale = initScale;
             mesh.material = platform;
@@ -116,15 +117,17 @@ public class PlatformController : MonoBehaviour {
             if (aValue >= 1)
             {   //change Camera to this platform
                 
-                cameraRig.transform.position = new Vector3(thisPosition.x,PlayerPrefs.GetFloat("CameraHeight"),thisPosition.z);
+                cameraRig.transform.localPosition = new Vector3(thisPosition.x,PlayerPrefs.GetFloat("CameraHeight"),thisPosition.z);
                 cameraRig.transform.rotation = transform.GetChild(0).rotation;
 
                 //turn off Menu and turn on mesh and coll in the prior Platform
-                Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1); 
+                Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1);
+
+                Debug.Log("Turn Off calling platform " + (baseController.platform));
                 priorPlatform.GetChild(1).gameObject.SetActive(false);
-                priorPlatform.GetChild(2).gameObject.GetComponent<MeshRenderer>().enabled = true;
-                priorPlatform.gameObject.GetComponent<BoxCollider>().enabled = true;
-                priorPlatform.gameObject.GetComponent<PlatformController>().isCurrentPlat = false;
+                priorPlatform.GetChild(2).GetComponent<MeshRenderer>().enabled = true;
+                priorPlatform.GetComponent<BoxCollider>().enabled = true;
+
 
                 
                 //turn on this Menu  
@@ -135,7 +138,7 @@ public class PlatformController : MonoBehaviour {
 
                 mesh.enabled = false;
                 bColl.enabled = false;
-                isCurrentPlat = true;
+
                
                 //turn off this platforms mesh and coll
 
