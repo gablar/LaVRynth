@@ -5,13 +5,12 @@ using System;
 public class LevelObjectController : MonoBehaviour {
     private bool isPaused = true;
     private Vector3 initScale;
-    AudioSource aSource;
+    //AudioSource aSource;
     Animator anim;
 
-    //LaVRynth assigned tto this levelObject
+    //LaVRynth assigned to this levelObject
     public Transform laVR;
-    public int laVRNum;
-    static int currentLaVR = 1;
+    static int callingLaVR =1;
 
     //Lock unlock level
 
@@ -20,12 +19,15 @@ public class LevelObjectController : MonoBehaviour {
     //fade
     void Awake(){
         anim = GetComponent<Animator>();
+        spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
+
+
     }
 
     // Use this for initialization
     void Start () {
         initScale = transform.localScale;
-        aSource = GetComponent<AudioSource>();
+        //aSource = GetComponent<AudioSource>();
         if (!isLocked) Unlock();
         
 
@@ -57,17 +59,46 @@ public class LevelObjectController : MonoBehaviour {
     {
         if (isPaused && !isLocked)
         { 
-            transform.localScale = initScale;//reset to regular scale
-            // get calling Lavrynth
-            LaVRynthController lv1 = transform.parent.GetChild(currentLaVR).GetComponent<LaVRynthController>();
-            lv1.StartFadeOut(laVRNum);
-            currentLaVR = laVRNum;
-            gameObject.SetActive(false);
-
-
+            InvokeRepeating("FadeOut", repeatRate, repeatRate);
         }
 
 
+    }
+
+    float repeatRate = .02f;
+    float timer = 0;
+    float fadeTime = 1.0f;
+    public Transform fadeSprite;
+    SpriteRenderer spriteRend;
+    Color spriteColor;
+
+    void FadeOut() {
+        timer += repeatRate;
+        //change according to the time elapsed
+        float percent = timer / fadeTime;
+        float aValue = Mathf.Lerp(0, 1, percent);
+
+        SetAlpha(aValue);
+
+        if (aValue >= 1)
+        {
+            transform.parent.GetChild(callingLaVR - 1).gameObject.SetActive(true);
+            transform.parent.GetChild(callingLaVR).gameObject.SetActive(false);
+            callingLaVR = transform.GetSiblingIndex()+1;
+            laVR.gameObject.SetActive(true);
+            timer = 0;
+            SetAlpha(1);
+            CancelInvoke("FadeOut");
+            transform.localScale = initScale;//reset to regular scale
+
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void SetAlpha(float aValue)
+    {
+        spriteColor.a = aValue;
+        spriteRend.color = spriteColor;
     }
 
     public void Unlock() {
