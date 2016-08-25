@@ -60,6 +60,7 @@ public class PlatformController : MonoBehaviour {
             cameraRig.transform.localPosition = new Vector3(thisPosition.x,
                                                         PlayerPrefs.GetFloat("CameraHeight"),
                                                         thisPosition.z);
+            cameraRig.transform.localRotation = Quaternion.identity;
             mesh.enabled = false;
             bColl.enabled = false;
            // Debug.Log("Default platform initialized, Platform #" + platformNumber);
@@ -123,7 +124,7 @@ public class PlatformController : MonoBehaviour {
                 //turn off Menu and turn on mesh and coll in the prior Platform
                 Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1);
 
-                Debug.Log("Turn Off calling platform " + (baseController.platform));
+                //Debug.Log("Turn Off calling platform " + (baseController.platform));
                 priorPlatform.GetChild(1).gameObject.SetActive(false);
                 priorPlatform.GetChild(2).GetComponent<MeshRenderer>().enabled = true;
                 priorPlatform.GetComponent<BoxCollider>().enabled = true;
@@ -183,4 +184,7 @@ public class PlatformController : MonoBehaviour {
         isPaused = false;
     }
 
+    void OnEnable() {
+
+    }
 }

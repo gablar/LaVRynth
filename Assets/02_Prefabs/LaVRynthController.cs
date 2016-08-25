@@ -6,11 +6,11 @@ public class LaVRynthController : MonoBehaviour {
     public Transform fadeSprite;
     SpriteRenderer spriteRend;
     Color spriteColor;
-    int lavToCall;
     public float repeatRate = .02f;
     float timer = 0;
-    public float fadeTime = .5f;
+    public float fadeTime = 1.0f;
     public OVRCameraRig cameraRig;
+    int callingLaVR;
     AudioSource aSource;
 
     // Use this for initialization
@@ -27,7 +27,7 @@ public class LaVRynthController : MonoBehaviour {
 	}
 
     public void StartFadeOut(int laVRNum) {
-        lavToCall = laVRNum;
+        callingLaVR = laVRNum;
         fadeSprite.gameObject.SetActive(true);
         aSource.Play();
         InvokeRepeating("FadeOut", repeatRate, repeatRate);
@@ -42,8 +42,10 @@ public class LaVRynthController : MonoBehaviour {
 
         if (aValue >= 1)
         {
-            transform.parent.GetChild(transform.GetSiblingIndex() - 1).gameObject.SetActive(true);
-            transform.parent.GetChild(lavToCall).gameObject.SetActive(true);
+            transform.parent.GetChild(callingLaVR - 1).gameObject.SetActive(true);
+            transform.parent.GetChild(callingLaVR).gameObject.SetActive(true);
+            //cameraRig.transform.localPosition = new Vector3(cameraRig.transform.localPosition.x, PlayerPrefs.GetFloat("CameraHeight"), cameraRig.transform.localPosition.z);
+
             timer = 0;
             SetAlpha(1);
             CancelInvoke("FadeOut");
@@ -78,7 +80,6 @@ public class LaVRynthController : MonoBehaviour {
         
         fadeSprite.gameObject.SetActive(true);
         SetAlpha(1);
-        cameraRig.transform.localPosition = new Vector3(cameraRig.transform.localPosition.x, PlayerPrefs.GetFloat("CameraHeight"), cameraRig.transform.localPosition.z);
         InvokeRepeating("FadeIn", repeatRate, repeatRate);
     }
 }
