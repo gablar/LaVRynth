@@ -49,7 +49,10 @@ public class PlatformController : MonoBehaviour {
         if (isDefault && isFirst)
         {
             PlayerPrefs.SetFloat("CameraHeight", cameraRig.transform.localPosition.y);
-            //OnSubmit();
+            cameraRig.transform.localPosition = new Vector3(thisPosition.x,
+                                            PlayerPrefs.GetFloat("CameraHeight"),
+                                            thisPosition.z);
+            cameraRig.transform.localRotation = Quaternion.identity;
             isFirst = false;
             mesh.enabled = false;
             bColl.enabled = false;
