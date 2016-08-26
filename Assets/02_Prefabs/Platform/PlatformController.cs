@@ -35,7 +35,7 @@ public class PlatformController : MonoBehaviour {
       Child 2 = Mesh*/
 
     void Awake() {
-        thisPosition = new Vector3(transform.localPosition.x, transform.GetChild(0).localPosition.y, transform.localPosition.z);
+        thisPosition = new Vector3(transform.position.x, transform.GetChild(0).position.y, transform.position.z);
         thisRotation = transform.GetChild(0).rotation;
         mesh = transform.GetChild(2).GetComponent<MeshRenderer>();
         bColl = GetComponent<BoxCollider>();
@@ -50,11 +50,11 @@ public class PlatformController : MonoBehaviour {
     void Start () {
         if (isDefault && isFirst)
         {
-            PlayerPrefs.SetFloat("CameraHeight", cameraRig.transform.localPosition.y);
-            cameraRig.transform.localPosition = new Vector3(thisPosition.x,
-                                            PlayerPrefs.GetFloat("CameraHeight"),
+            PlayerPrefs.SetFloat("CameraHeight", 0);
+            cameraRig.transform.position = new Vector3(thisPosition.x,
+                                            thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
                                             thisPosition.z);
-            cameraRig.transform.localRotation = thisRotation;
+            cameraRig.transform.rotation = thisRotation;
             isFirst = false;
             mesh.enabled = false;
             bColl.enabled = false;
@@ -62,8 +62,8 @@ public class PlatformController : MonoBehaviour {
         }
         else if (isDefault && !isFirst)
         {
-            cameraRig.transform.localPosition = new Vector3(thisPosition.x,
-                                                        PlayerPrefs.GetFloat("CameraHeight"),
+            cameraRig.transform.position = new Vector3(thisPosition.x,
+                                                        thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
                                                         thisPosition.z);
             cameraRig.transform.localRotation = thisRotation;
             mesh.enabled = false;
@@ -123,7 +123,7 @@ public class PlatformController : MonoBehaviour {
             if (aValue >= 1)
             {   //change Camera to this platform
                 
-                cameraRig.transform.localPosition = new Vector3(thisPosition.x,PlayerPrefs.GetFloat("CameraHeight"),thisPosition.z);
+                cameraRig.transform.position = new Vector3(thisPosition.x, thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),thisPosition.z);
                 cameraRig.transform.localRotation = thisRotation;
 
                 //turn off Menu and turn on mesh and coll in the prior Platform
