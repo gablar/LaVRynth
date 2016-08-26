@@ -28,6 +28,7 @@ public class PlatformController : MonoBehaviour {
 
     AudioSource aSource;
     Vector3 thisPosition;
+    Quaternion thisRotation;
 
     /*Child 0 = Camera Position
       Child 1 = Menu
@@ -35,6 +36,7 @@ public class PlatformController : MonoBehaviour {
 
     void Awake() {
         thisPosition = new Vector3(transform.localPosition.x, transform.GetChild(0).localPosition.y, transform.localPosition.z);
+        thisRotation = transform.GetChild(0).rotation;
         mesh = transform.GetChild(2).GetComponent<MeshRenderer>();
         bColl = GetComponent<BoxCollider>();
         initScale = transform.GetChild(2).localScale;
@@ -52,7 +54,7 @@ public class PlatformController : MonoBehaviour {
             cameraRig.transform.localPosition = new Vector3(thisPosition.x,
                                             PlayerPrefs.GetFloat("CameraHeight"),
                                             thisPosition.z);
-            cameraRig.transform.localRotation = Quaternion.identity;
+            cameraRig.transform.localRotation = thisRotation;
             isFirst = false;
             mesh.enabled = false;
             bColl.enabled = false;
@@ -63,7 +65,7 @@ public class PlatformController : MonoBehaviour {
             cameraRig.transform.localPosition = new Vector3(thisPosition.x,
                                                         PlayerPrefs.GetFloat("CameraHeight"),
                                                         thisPosition.z);
-            cameraRig.transform.localRotation = Quaternion.identity;
+            cameraRig.transform.localRotation = thisRotation;
             mesh.enabled = false;
             bColl.enabled = false;
            // Debug.Log("Default platform initialized, Platform #" + platformNumber);
@@ -122,7 +124,7 @@ public class PlatformController : MonoBehaviour {
             {   //change Camera to this platform
                 
                 cameraRig.transform.localPosition = new Vector3(thisPosition.x,PlayerPrefs.GetFloat("CameraHeight"),thisPosition.z);
-                cameraRig.transform.rotation = transform.GetChild(0).rotation;
+                cameraRig.transform.localRotation = thisRotation;
 
                 //turn off Menu and turn on mesh and coll in the prior Platform
                 Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1);
