@@ -8,6 +8,8 @@ public class BallGeneratorController : MonoBehaviour {
     public Transform lavBase;
 
     Vector3 initScale;
+    Color initColor;
+    Color highLightColor = Color.green;
     AudioSource aSource;
     public bool isPaused = true;
     BoxCollider bCollider;
@@ -22,6 +24,7 @@ public class BallGeneratorController : MonoBehaviour {
         initScale = transform.localScale;
         bCollider = GetComponent<BoxCollider>();
         mRend = GetComponent<MeshRenderer>();
+        initColor = mRend.material.color;
         aSource = GetComponent<AudioSource>();
        // if (isPaused) Pause(); else UnPause();
 
@@ -32,17 +35,24 @@ public class BallGeneratorController : MonoBehaviour {
 
     public void OnPointerEnter() {
 
-        if (isPaused) { transform.localScale = initScale * 1.2f; }
+        if (isPaused) { transform.localScale = initScale * 1.3f;
+            mRend.material.color = highLightColor;
+        }
     }
 
     public void OnPointerExit()
-    {   
-        if (isPaused) transform.localScale = initScale;
+    {
+        if (isPaused) {
+            transform.localScale = initScale;
+            mRend.material.color = initColor;
+            
+            }
     }
 
     public void OnSubmit() {
         GameObject gameBall = GameObject.FindGameObjectWithTag("ball");
-        if (!gameBall && isPaused) {
+        if (isPaused) {
+            if(gameBall) Destroy(gameBall);
             aSource.Play();
             lavBase.rotation = Quaternion.identity;
             Instantiate(ball,SpawnLocation.position, Quaternion.identity);
