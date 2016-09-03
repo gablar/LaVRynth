@@ -11,7 +11,7 @@ public class PlatformController : MonoBehaviour {
     SpriteRenderer spriteRend;
     Color spriteColor;
 
-    public OVRCameraRig cameraRig;
+    public Transform FPSController;
     private Vector3 initScale;
     public float repeatRate = .02f;
     float timer = 0;
@@ -23,7 +23,7 @@ public class PlatformController : MonoBehaviour {
     public Material hPlatform;
     BoxCollider bColl;
 
-    public BaseController baseController;
+    public BaseControllerKong baseController;
     public int platformNumber;
 
     AudioSource aSource;
@@ -52,10 +52,10 @@ public class PlatformController : MonoBehaviour {
         if (isDefault && isFirst)
         {
             PlayerPrefs.SetFloat("CameraHeight", 0);
-            cameraRig.transform.position = new Vector3(thisPosition.x,
+            FPSController.position = new Vector3(thisPosition.x,
                                             thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
                                             thisPosition.z);
-            cameraRig.transform.rotation = thisRotation;
+            FPSController.rotation = thisRotation;
             isFirst = false;
             mesh.enabled = false;
             bColl.enabled = false;
@@ -63,10 +63,10 @@ public class PlatformController : MonoBehaviour {
         }
         else if (isDefault && !isFirst)
         {
-            cameraRig.transform.position = new Vector3(thisPosition.x,
+            FPSController.position = new Vector3(thisPosition.x,
                                                         thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
                                                         thisPosition.z);
-            cameraRig.transform.localRotation = thisRotation;
+            FPSController.localRotation = thisRotation;
             mesh.enabled = false;
             bColl.enabled = false;
            // Debug.Log("Default platform initialized, Platform #" + platformNumber);
@@ -123,9 +123,9 @@ public class PlatformController : MonoBehaviour {
 
             if (aValue >= 1)
             {   //change Camera to this platform
-                
-                cameraRig.transform.position = new Vector3(thisPosition.x, thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),thisPosition.z);
-                cameraRig.transform.localRotation = thisRotation;
+
+                FPSController.position = new Vector3(thisPosition.x, thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),thisPosition.z);
+                FPSController.localRotation = thisRotation;
 
                 //turn off Menu and turn on mesh and coll in the prior Platform
                 Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1);

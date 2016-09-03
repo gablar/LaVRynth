@@ -9,7 +9,6 @@ public class LaVRynthController : MonoBehaviour {
     public float repeatRate = .02f;
     float timer = 0;
     public float fadeTime = 1.0f;
-    public OVRCameraRig cameraRig;
     int callingLaVR;
     AudioSource aSource;
 

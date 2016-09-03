@@ -10,7 +10,7 @@ public class PauseController : MonoBehaviour {
     public bool isPaused = true;
 
     //Base
-    public BaseController basController;
+    public BaseControllerKong basController;
    
 
     //ball
@@ -28,35 +28,21 @@ public class PauseController : MonoBehaviour {
     }
     void Start () {
 
-        OVRTouchpad.Create();
-        OVRTouchpad.TouchHandler += HandleTouchHandler;
+
     }
 
-    private void HandleTouchHandler(object sender, EventArgs e)
-    {
-        OVRTouchpad.TouchArgs touchArgs = (OVRTouchpad.TouchArgs)e;
-        OVRTouchpad.TouchEvent touchEvent = touchArgs.TouchType;
-        if(touchArgs.TouchType == OVRTouchpad.TouchEvent.SingleTap)
-        {
-            if (!isPaused)
-            {
-                //pause
-                PauseGame();
+        
+            
 
-            }
-            else
-            {
-                UnPauseGame();
-            }
+    // Update is called once per frame
+    void Update () {
+        if (Input.GetMouseButtonDown(0)) {
+            if (isPaused) { UnPauseGame(); } else { PauseGame(); }
         }
 
     }
 
-    // Update is called once per frame
-    void Update () {
-	}
-
-    private void UnPauseGame()
+    public void UnPauseGame()
     {
         if (OnPausePressed != null)
         {
@@ -83,7 +69,7 @@ public class PauseController : MonoBehaviour {
         platforms.gameObject.SetActive(false);
     }
 
-    private void PauseGame()
+    public void PauseGame()
     {
         if (OnPausePressed != null)
         {

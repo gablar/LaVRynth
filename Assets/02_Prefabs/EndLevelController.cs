@@ -5,6 +5,7 @@ public class EndLevelController : MonoBehaviour {
 
     AudioSource aSource;
     public LevelObjectController levelToOpen;
+    public PauseController pauseCont;
     
      
 	// Use this for initialization
@@ -24,6 +25,7 @@ public class EndLevelController : MonoBehaviour {
             aSource.Play();
             Destroy(ball.gameObject);
             GetComponent<MeshRenderer>().enabled = false;
+            pauseCont.PauseGame();
             Destroy(gameObject, 2);
         }
 
