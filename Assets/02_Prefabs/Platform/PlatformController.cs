@@ -32,7 +32,8 @@ public class PlatformController : MonoBehaviour {
 
     /*Child 0 = Camera Position
       Child 1 = Menu
-      Child 2 = Mesh*/
+      Child 2 = Mesh 
+      */
 
     void Awake() {
         thisPosition = new Vector3(transform.position.x, transform.GetChild(0).position.y, transform.position.z);
@@ -145,8 +146,6 @@ public class PlatformController : MonoBehaviour {
                 mesh.enabled = false;
                 bColl.enabled = false;
 
-               
-                //turn off this platforms mesh and coll
 
                 baseController.platform = platformNumber;
                 fadingOut = false;
