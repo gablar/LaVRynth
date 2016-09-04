@@ -28,7 +28,7 @@ public class PlatformController : MonoBehaviour {
 
     AudioSource aSource;
     Vector3 thisPosition;
-    Quaternion thisRotation;
+    Vector3 thisRotation;
 
     /*Child 0 = Camera Position
       Child 1 = Menu
@@ -37,7 +37,7 @@ public class PlatformController : MonoBehaviour {
 
     void Awake() {
         thisPosition = new Vector3(transform.position.x, transform.GetChild(0).position.y, transform.position.z);
-        thisRotation = transform.GetChild(0).rotation;
+        thisRotation = transform.rotation.eulerAngles;
         mesh = transform.GetChild(2).GetComponent<MeshRenderer>();
         bColl = GetComponent<BoxCollider>();
         initScale = transform.GetChild(2).localScale;
@@ -55,7 +55,7 @@ public class PlatformController : MonoBehaviour {
             FPSController.position = new Vector3(thisPosition.x,
                                             thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
                                             thisPosition.z);
-            FPSController.rotation = thisRotation;
+            FPSController.eulerAngles = thisRotation;
             isFirst = false;
             mesh.enabled = false;
             bColl.enabled = false;
@@ -66,7 +66,7 @@ public class PlatformController : MonoBehaviour {
             FPSController.position = new Vector3(thisPosition.x,
                                                         thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
                                                         thisPosition.z);
-            FPSController.localRotation = thisRotation;
+            FPSController.eulerAngles = thisRotation;
             mesh.enabled = false;
             bColl.enabled = false;
            // Debug.Log("Default platform initialized, Platform #" + platformNumber);
@@ -125,7 +125,7 @@ public class PlatformController : MonoBehaviour {
             {   //change Camera to this platform
 
                 FPSController.position = new Vector3(thisPosition.x, thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),thisPosition.z);
-                FPSController.localRotation = thisRotation;
+                FPSController.eulerAngles = thisRotation;
 
                 //turn off Menu and turn on mesh and coll in the prior Platform
                 Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1);

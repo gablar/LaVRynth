@@ -7,6 +7,7 @@ public class BallController : MonoBehaviour {
     Rigidbody rgb;
     Animator anim;
     bool isMoving;
+    public float cutOffSpeed =3; 
     bool isPaused = true;
 	// Use this for initialization
 	void Start () {
@@ -24,19 +25,14 @@ public class BallController : MonoBehaviour {
         float mag = rgb.velocity.magnitude;
         
 
-        if (isMoving && mag <6)
+        if (!isMoving && mag > cutOffSpeed)
         {
-            audioSource.pitch = mag/2;
-        }
-        else
-        if (!isMoving && mag > 0)
-        {
-            audioSource.pitch = mag;
             audioSource.Play();
             isMoving = true;
         }
         else
-        if (isMoving  &&  mag<=0) {
+        if (isMoving && mag < cutOffSpeed)
+        {
             audioSource.Stop();
             isMoving = false;
         }
