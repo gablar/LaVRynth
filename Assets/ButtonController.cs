@@ -21,6 +21,8 @@ public class ButtonController : MonoBehaviour {
     //init For StartButton
     public LevelObjectController levelToOpen;
 
+    //init for Credits
+
 
     // Use this for initialization
     void Start () {
@@ -58,6 +60,14 @@ public class ButtonController : MonoBehaviour {
         StartText.gameObject.SetActive(false);
         CreditsText.gameObject.SetActive(false);
         TutorialText.gameObject.SetActive(true);
+
+
+    }
+
+    public void OnSubmitCredits() {
+        WelcomeText.gameObject.SetActive(false);
+        CreditsText.enabled = false;
+        CreditsText.transform.GetChild(1).gameObject.SetActive(true);
 
 
     }
