@@ -1,13 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour {
+    //init for button
     bool isPaused = true;
     public Transform centerBall;
     Vector3 initScale;
     Color initColor;
     Color highLightColor = Color.green;
     MeshRenderer mRend;
+
+    //init for elements of Menu
+    public Text WelcomeText;
+    public Text StartText;
+    public Text CreditsText;
+    public Text TutorialText;
+
+
+    //init For StartButton
+    public LevelObjectController levelToOpen;
 
 
     // Use this for initialization
@@ -39,8 +51,14 @@ public class ButtonController : MonoBehaviour {
             mRend.material.color = initColor;
     }
 
-    public void OnSubmit()
+    public void OnSubmitStart()
     {
+        levelToOpen.Unlock();
+        WelcomeText.gameObject.SetActive(false);
+        StartText.gameObject.SetActive(false);
+        CreditsText.gameObject.SetActive(false);
+        TutorialText.gameObject.SetActive(true);
+
 
     }
 

@@ -26,7 +26,9 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
-
+/*_______________________________
+ * ______________________________
+ * Change initialization for kongregate*/
 //[InitializeOnLoad]
 class OVRMoonlightLoader
 {
