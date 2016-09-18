@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
 
-[InitializeOnLoad]
+//[InitializeOnLoad]
 class OVRMoonlightLoader
 {
     static OVRMoonlightLoader()

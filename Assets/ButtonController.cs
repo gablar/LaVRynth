@@ -9,12 +9,12 @@ public class ButtonController : MonoBehaviour {
     Color highLightColor = Color.green;
     MeshRenderer mRend;
 
-    public delegate void ButtonSubmitted();
-    public static event ButtonSubmitted OnButtonSubmitted;
 
     // Use this for initialization
     void Start () {
+
         initScale = centerBall.localScale;
+        Debug.Log("initial Scale"+ initScale);
         mRend = centerBall.gameObject.GetComponent<MeshRenderer>();
         initColor = mRend.material.color;
 
@@ -27,38 +27,25 @@ public class ButtonController : MonoBehaviour {
 
     public void OnPointerEnter()
     {
-        if (isPaused)
-        {
-       
+        Debug.Log("Pointer entered");
             centerBall.localScale = initScale * 1.5f;
             mRend.material.color = highLightColor;
-
-
-        }
     }
 
     public void OnPointerExit()
     {
-        if (isPaused)
-        {
- 
-            centerBall.localScale = initScale;
+        Debug.Log("Pointer Exited");
+        centerBall.localScale = initScale;
             mRend.material.color = initColor;
-        }
-
-
     }
 
     public void OnSubmit()
     {
-        if (isPaused) {
-            if (OnButtonSubmitted != null)
-            {
-                OnButtonSubmitted();
-            }
 
-        }
+    }
 
+    public void OnStartPressed()
+    {
 
     }
 }
