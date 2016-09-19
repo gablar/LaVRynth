@@ -26,7 +26,7 @@ public class EndLevelController : MonoBehaviour {
             Destroy(ball.gameObject);
             GetComponent<MeshRenderer>().enabled = false;
             pauseCont.PauseGame();
-            Destroy(gameObject, 2);
+            Destroy(gameObject, 3.1f);
         }
 
     }
