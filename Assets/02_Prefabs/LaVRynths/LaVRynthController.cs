@@ -15,8 +15,6 @@ public class LaVRynthController : MonoBehaviour {
     // Use this for initialization
     void Awake() {
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
-        SetAlpha(0);
-        fadeSprite.gameObject.SetActive(false);
         aSource = GetComponent<AudioSource>();
     }
 	
@@ -24,7 +22,7 @@ public class LaVRynthController : MonoBehaviour {
 	void Update () {
 	
 	}
-
+    /*
     public void StartFadeOut(int laVRNum) {
         callingLaVR = laVRNum;
         fadeSprite.gameObject.SetActive(true);
@@ -50,7 +48,7 @@ public class LaVRynthController : MonoBehaviour {
             CancelInvoke("FadeOut");
             gameObject.SetActive(false);
         }
-    }
+    }*/
 
     public void FadeIn() {
         

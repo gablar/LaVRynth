@@ -10,7 +10,7 @@ public class LevelObjectController : MonoBehaviour {
 
     //LaVRynth assigned to this levelObject
     public Transform laVR;
-    static int callingLaVR =1;
+    static int callingLaVR =0;//0 means the Calling laVRynth is the start menu
 
     //Lock unlock level
 
@@ -58,7 +58,9 @@ public class LevelObjectController : MonoBehaviour {
     public void OnSubmit()
     {
         if (isPaused && !isLocked)
-        { 
+        {
+            fadeSprite.gameObject.SetActive(true);
+            SetAlpha(1);
             InvokeRepeating("FadeOut", repeatRate, repeatRate);
         }
 
@@ -81,10 +83,14 @@ public class LevelObjectController : MonoBehaviour {
         SetAlpha(aValue);
 
         if (aValue >= 1)
-        {
-            transform.parent.GetChild(callingLaVR - 1).gameObject.SetActive(true);
-            transform.parent.GetChild(callingLaVR).gameObject.SetActive(false);
-            callingLaVR = transform.GetSiblingIndex()+1;
+        {   if (callingLaVR == 0) {
+                callingLaVR = 1;
+            }
+            else { 
+                transform.parent.GetChild(callingLaVR - 1).gameObject.SetActive(true);
+                transform.parent.GetChild(callingLaVR).gameObject.SetActive(false);
+                callingLaVR = transform.GetSiblingIndex()+1;
+            }
             laVR.gameObject.SetActive(true);
             timer = 0;
             SetAlpha(1);

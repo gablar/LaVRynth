@@ -16,7 +16,7 @@ public class PlatformController : MonoBehaviour {
     public float repeatRate = .02f;
     float timer = 0;
     public float fadeTime = .5f;
-    bool fadingOut = true;
+
 
     MeshRenderer mesh;
     public Material platform;
@@ -42,13 +42,13 @@ public class PlatformController : MonoBehaviour {
         bColl = GetComponent<BoxCollider>();
         initScale = transform.GetChild(2).localScale;
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
-        SetAlpha(0);
-        fadeSprite.gameObject.SetActive(false);
         aSource = GetComponent<AudioSource>();
     }
 
     // Use this for initialization
     void Start () {
+
+        
         if (isDefault && isFirst)
         {
             PlayerPrefs.SetFloat("CameraHeight", 0);
@@ -100,9 +100,10 @@ public class PlatformController : MonoBehaviour {
         {   //EnableSprite
             transform.GetChild(2).localScale = initScale;
             mesh.material = platform;
-            fadeSprite.gameObject.SetActive(true);
             aSource.Play();
-            //Set a to first value
+
+            fadeSprite.gameObject.SetActive(true);
+            SetAlpha(0);
             InvokeRepeating("FadeOut", repeatRate, repeatRate);
 
         }
@@ -112,61 +113,67 @@ public class PlatformController : MonoBehaviour {
 
 
     void FadeOut()
-    {   if (fadingOut)
-        {
-            timer += repeatRate;
-            //change according to the time elapsed
-            float percent = timer / fadeTime;
-            float aValue = Mathf.Lerp(0 , 1, percent);
+    {
+        timer += repeatRate;
+        //change according to the time elapsed
+        float percent = timer / fadeTime;
+        float aValue = Mathf.Lerp(0, 1, percent);
 
-            SetAlpha(aValue);
+        SetAlpha(aValue);
 
-            if (aValue >= 1)
-            {   //change Camera to this platform
+        if (aValue >= 1)
+        {   //change Camera to this platform
 
-                FPSController.position = new Vector3(thisPosition.x, thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),thisPosition.z);
-                FPSController.eulerAngles = thisRotation;
+            FPSController.position = new Vector3(thisPosition.x, thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"), thisPosition.z);
+            FPSController.eulerAngles = thisRotation;
 
-                //turn off Menu and turn on mesh and coll in the prior Platform
-                Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1);
+            //turn off Menu and turn on mesh and coll in the prior Platform
+            Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1);
 
-                //Debug.Log("Turn Off calling platform " + (baseController.platform));
-                priorPlatform.GetChild(1).gameObject.SetActive(false);
-                priorPlatform.GetChild(2).GetComponent<MeshRenderer>().enabled = true;
-                priorPlatform.GetComponent<BoxCollider>().enabled = true;
-
-
-                
-                //turn on this Menu  
-
-                transform.GetChild(1).gameObject.SetActive(true);
-
-                //turn off this platform mesh and coll
-
-                mesh.enabled = false;
-                bColl.enabled = false;
+            //Debug.Log("Turn Off calling platform " + (baseController.platform));
+            priorPlatform.GetChild(1).gameObject.SetActive(false);
+            priorPlatform.GetChild(2).GetComponent<MeshRenderer>().enabled = true;
+            priorPlatform.GetComponent<BoxCollider>().enabled = true;
 
 
-                baseController.platform = platformNumber;
-                fadingOut = false;
-                timer = 0;
-            }
+
+            //turn on this Menu  
+
+            transform.GetChild(1).gameObject.SetActive(true);
+
+            //turn off this platform mesh and coll
+
+            mesh.enabled = false;
+            bColl.enabled = false;
+
+
+            baseController.platform = platformNumber;
+
+            timer = 0;
+            SetAlpha(1);
+            InvokeRepeating("FadeIn", repeatRate, repeatRate);
+            CancelInvoke("FadeOut");
         }
-        else {
 
-            timer += repeatRate;
-            float percent = timer / fadeTime;
+    }
 
-            float aValue = Mathf.Lerp(1 , 0 , percent);
+    private void FadeIn()
+    {
+        timer += repeatRate;
+        float percent = timer / fadeTime;
 
-            SetAlpha(aValue);         
+        float aValue = Mathf.Lerp(1, 0, percent);
 
-            if (aValue <= 0) {
-                fadingOut = true;
-                fadeSprite.gameObject.SetActive(false);
-                CancelInvoke("FadeOut");
+        SetAlpha(aValue);
 
-            }
+        if (aValue <= 0)
+        {
+            SetAlpha(0);
+            fadeSprite.gameObject.SetActive(false);
+            timer = 0;
+            CancelInvoke("FadeIn");
+
+
 
 
         }
