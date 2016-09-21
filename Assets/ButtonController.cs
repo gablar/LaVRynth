@@ -12,10 +12,11 @@ public class ButtonController : MonoBehaviour {
     MeshRenderer mRend;
 
     //init for elements of Menu
-    public Text WelcomeText;
-    public Text StartText;
-    public Text CreditsText;
-    public Text TutorialText;
+    public Text welcomeText;
+    public Text startText;
+    public Text creditsText;
+    public Text tutorialText;
+    public Text celebrationText;
 
 
     //init For StartButton
@@ -56,22 +57,28 @@ public class ButtonController : MonoBehaviour {
     public void OnSubmitStart()
     {
         levelToOpen.Unlock();
-        WelcomeText.gameObject.SetActive(false);
-        StartText.gameObject.SetActive(false);
-        CreditsText.gameObject.SetActive(false);
-        TutorialText.gameObject.SetActive(true);
+        welcomeText.gameObject.SetActive(false);
+        startText.gameObject.SetActive(false);
+        creditsText.gameObject.SetActive(false);
+        tutorialText.gameObject.SetActive(true);
+        Invoke("DisableTutorial", 4.0f);
 
 
     }
 
     public void OnSubmitCredits() {
-        WelcomeText.gameObject.SetActive(false);
-        CreditsText.enabled = false;
-        CreditsText.transform.GetChild(1).gameObject.SetActive(true);
+        welcomeText.gameObject.SetActive(false);
+        creditsText.enabled = false;
+        creditsText.transform.GetChild(1).gameObject.SetActive(true);
 
 
     }
 
+    void DisableTutorial() {
+        tutorialText.gameObject.SetActive(false);
+        celebrationText.gameObject.SetActive(true);
+        transform.parent.parent.gameObject.SetActive(false);
+    }
     public void OnStartPressed()
     {
 
