@@ -43,13 +43,32 @@ public class PlatformController : MonoBehaviour {
         initScale = transform.GetChild(2).localScale;
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
         aSource = GetComponent<AudioSource>();
+        InitializePlatform();
     }
 
+    void OnEnable() {
+        InitializePlatform();
+    }
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
+        //InitializePlatform();
 
-        
-        if (isDefault && isFirst)
+    }
+
+    private void InitializePlatform()
+    {
+     if (isDefault && !isFirst)
+        {
+            FPSController.position = new Vector3(thisPosition.x,
+                                                        thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
+                                                        thisPosition.z);
+            FPSController.eulerAngles = thisRotation;
+            mesh.enabled = false;
+            bColl.enabled = false;
+            // Debug.Log("Default platform initialized, Platform #" + platformNumber);
+        }
+        else if (isDefault && isFirst)
         {
             PlayerPrefs.SetFloat("CameraHeight", 0);
             FPSController.position = new Vector3(thisPosition.x,
@@ -61,20 +80,8 @@ public class PlatformController : MonoBehaviour {
             bColl.enabled = false;
 
         }
-        else if (isDefault && !isFirst)
-        {
-            FPSController.position = new Vector3(thisPosition.x,
-                                                        thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
-                                                        thisPosition.z);
-            FPSController.eulerAngles = thisRotation;
-            mesh.enabled = false;
-            bColl.enabled = false;
-           // Debug.Log("Default platform initialized, Platform #" + platformNumber);
-        }
-
-
+        
     }
-
 
     public void OnPointerEnter()
     {
@@ -195,7 +202,4 @@ public class PlatformController : MonoBehaviour {
         isPaused = false;
     }
 
-    void OnEnable() {
-
-    }
 }

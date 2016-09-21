@@ -60,7 +60,8 @@ public class LevelObjectController : MonoBehaviour {
         if (isPaused && !isLocked)
         {
             fadeSprite.gameObject.SetActive(true);
-            SetAlpha(1);
+            SetAlpha(0);
+            Debug.Log("Fade out Started");
             InvokeRepeating("FadeOut", repeatRate, repeatRate);
         }
 
@@ -75,6 +76,7 @@ public class LevelObjectController : MonoBehaviour {
     Color spriteColor;
 
     void FadeOut() {
+
         timer += repeatRate;
         //change according to the time elapsed
         float percent = timer / fadeTime;
@@ -83,12 +85,16 @@ public class LevelObjectController : MonoBehaviour {
         SetAlpha(aValue);
 
         if (aValue >= 1)
+            //if the calling is done by the start menu
         {   if (callingLaVR == 0) {
                 callingLaVR = 1;
             }
             else { 
+                //activate the calling Level Object
                 transform.parent.GetChild(callingLaVR - 1).gameObject.SetActive(true);
+                //deactivate the calling LaVRynth
                 transform.parent.GetChild(callingLaVR).gameObject.SetActive(false);
+                //set this level object as the next calling laberinth
                 callingLaVR = transform.GetSiblingIndex()+1;
             }
             laVR.gameObject.SetActive(true);
