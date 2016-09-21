@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour {
     //init for button
-    bool isPaused = true;
+
     public Transform centerBall;
     Vector3 initScale;
     Color initColor;
@@ -29,7 +29,7 @@ public class ButtonController : MonoBehaviour {
     void Start () {
 
         initScale = centerBall.localScale;
-        Debug.Log("initial Scale"+ initScale);
+       // Debug.Log("initial Scale"+ initScale);
         mRend = centerBall.gameObject.GetComponent<MeshRenderer>();
         initColor = mRend.material.color;
 
@@ -42,14 +42,14 @@ public class ButtonController : MonoBehaviour {
 
     public void OnPointerEnter()
     {
-        Debug.Log("Pointer entered");
+        //Debug.Log("Pointer entered");
             centerBall.localScale = initScale * 1.5f;
             mRend.material.color = highLightColor;
     }
 
     public void OnPointerExit()
     {
-        Debug.Log("Pointer Exited");
+        //Debug.Log("Pointer Exited");
         centerBall.localScale = initScale;
             mRend.material.color = initColor;
     }

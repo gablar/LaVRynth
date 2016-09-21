@@ -10,12 +10,12 @@ public class LaVRynthController : MonoBehaviour {
     float timer = 0;
     public float fadeTime = 1.0f;
     int callingLaVR;
-    AudioSource aSource;
+
 
     // Use this for initialization
     void Awake() {
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
-        aSource = GetComponent<AudioSource>();
+
     }
 	
 	// Update is called once per frame
@@ -55,7 +55,6 @@ public class LaVRynthController : MonoBehaviour {
         timer += repeatRate;
         float percent = timer / fadeTime;
         float aValue = Mathf.Lerp(1, 0, percent);
-
         SetAlpha(aValue);
 
         if (aValue <= 0.05f)
@@ -72,11 +71,18 @@ public class LaVRynthController : MonoBehaviour {
         spriteColor.a = aValue;
         spriteRend.color = spriteColor;
     }
-
+    //instead of doing the dade in and camera movement consider doing it on a separate function. 
     void OnEnable() {
         
         fadeSprite.gameObject.SetActive(true);
         SetAlpha(1);
         InvokeRepeating("FadeIn", repeatRate, repeatRate);
+        Invoke("InitPlatform",repeatRate + 0.01f);//hack to let child initialize
+    }
+
+    void InitPlatform() {
+        int defaultPlatform = transform.GetChild(0).GetComponent<BaseControllerKong>().platform;
+        Debug.Log(gameObject.name + "initializing Platform " + defaultPlatform);
+        transform.GetChild(1).GetChild(defaultPlatform - 1).GetComponent<PlatformController>().ReinitializeCamera();
     }
 }

@@ -5,6 +5,7 @@ public class PlatformController : MonoBehaviour {
     private bool isPaused = true;
     public bool isDefault;
     public bool isFirst;
+    public bool isReturning = false;
     
 
     public Transform fadeSprite;
@@ -44,19 +45,23 @@ public class PlatformController : MonoBehaviour {
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
         aSource = GetComponent<AudioSource>();
         InitializePlatform();
+     
     }
 
-    void OnEnable() {
-        InitializePlatform();
-    }
+  /*  void OnEnable() {
+        if (isDefault && isReturning )
+        {
+            Debug.Log("On Enable initialization");
+            InitializePlatform();
+        }
+        isReturning = false;
+    }*/
     // Use this for initialization
-    void Start ()
-    {
-        //InitializePlatform();
+    void Start() { }
 
-    }
+    
 
-    private void InitializePlatform()
+    public void InitializePlatform()
     {
      if (isDefault && !isFirst)
         {
@@ -81,6 +86,17 @@ public class PlatformController : MonoBehaviour {
 
         }
         
+    }
+
+    public void ReinitializeCamera() {
+        PlayerPrefs.SetFloat("CameraHeight", 0);
+        FPSController.position = new Vector3(thisPosition.x,
+                                        thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
+                                        thisPosition.z);
+        FPSController.eulerAngles = thisRotation;
+        isFirst = false;
+        mesh.enabled = false;
+        bColl.enabled = false;
     }
 
     public void OnPointerEnter()
@@ -153,7 +169,7 @@ public class PlatformController : MonoBehaviour {
             mesh.enabled = false;
             bColl.enabled = false;
 
-
+            //set Current Platform
             baseController.platform = platformNumber;
 
             timer = 0;

@@ -61,7 +61,6 @@ public class LevelObjectController : MonoBehaviour {
         {
             fadeSprite.gameObject.SetActive(true);
             SetAlpha(0);
-            Debug.Log("Fade out Started");
             InvokeRepeating("FadeOut", repeatRate, repeatRate);
         }
 
@@ -118,6 +117,8 @@ public class LevelObjectController : MonoBehaviour {
         transform.GetChild(1).gameObject.SetActive(false);
        
     }
+
+
 
 
 
