@@ -51,7 +51,7 @@ public class ButtonController : MonoBehaviour {
     {
         //Debug.Log("Pointer Exited");
         centerBall.localScale = initScale;
-            mRend.material.color = initColor;
+        mRend.material.color = initColor;
     }
 
     public void OnSubmitStart()

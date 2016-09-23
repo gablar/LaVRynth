@@ -4,7 +4,11 @@ using System;
 
 public class LevelObjectController : MonoBehaviour {
     private bool isPaused = true;
-    private Vector3 initScale;
+    private Vector3 initScale0;
+    private Vector3 initScale1;
+    Transform meshTransform;
+    Transform lockTransform;
+    Transform highLighterTransform;
     //AudioSource aSource;
     Animator anim;
 
@@ -26,7 +30,12 @@ public class LevelObjectController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        initScale = transform.localScale;
+        meshTransform = transform.GetChild(0);
+        lockTransform = transform.GetChild(1);
+        highLighterTransform = transform.GetChild(2);//off by default
+
+        initScale0 = meshTransform.localScale;
+        initScale1 = lockTransform.localScale;
         //aSource = GetComponent<AudioSource>();
         if (!isLocked) Unlock();
         
@@ -39,7 +48,9 @@ public class LevelObjectController : MonoBehaviour {
         if (isPaused)
         {
             anim.SetBool("isSpining", false);
-            transform.localScale = initScale * 3.0f;
+            meshTransform.localScale = initScale0 * 3.0f;
+            lockTransform.localScale = initScale1 * 3.0f;
+
 
         }
     }
@@ -49,7 +60,8 @@ public class LevelObjectController : MonoBehaviour {
         if (isPaused)
         {
             anim.SetBool("isSpining", true);
-            transform.localScale = initScale;
+            meshTransform.localScale = initScale0;
+            lockTransform.localScale = initScale1; 
         }
 
         
@@ -100,8 +112,9 @@ public class LevelObjectController : MonoBehaviour {
             timer = 0;
             SetAlpha(1);
             CancelInvoke("FadeOut");
-            transform.localScale = initScale;//reset to regular scale
-
+            meshTransform.localScale = initScale0;
+            lockTransform.localScale = initScale1;//reset to regular scale
+            highLighterTransform.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
     }
@@ -114,7 +127,8 @@ public class LevelObjectController : MonoBehaviour {
 
     public void Unlock() {
         isLocked = false;
-        transform.GetChild(1).gameObject.SetActive(false);
+        lockTransform.gameObject.SetActive(false);
+        highLighterTransform.gameObject.SetActive(true);
        
     }
 
