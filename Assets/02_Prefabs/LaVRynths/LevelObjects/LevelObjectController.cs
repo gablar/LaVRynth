@@ -6,6 +6,7 @@ public class LevelObjectController : MonoBehaviour {
     private bool isPaused = true;
     private Vector3 initScale0;
     private Vector3 initScale1;
+    private Vector3 initPosLock;
     Transform meshTransform;
     Transform lockTransform;
     Transform highLighterTransform;
@@ -36,6 +37,8 @@ public class LevelObjectController : MonoBehaviour {
 
         initScale0 = meshTransform.localScale;
         initScale1 = lockTransform.localScale;
+
+        initPosLock = lockTransform.position;
         //aSource = GetComponent<AudioSource>();
         if (!isLocked) Unlock();
         
@@ -49,6 +52,7 @@ public class LevelObjectController : MonoBehaviour {
         {
             anim.SetBool("isSpining", false);
             meshTransform.localScale = initScale0 * 3.0f;
+            lockTransform.position = new Vector3(initPosLock.x, initPosLock.y + 1.0f, initPosLock.z);
             lockTransform.localScale = initScale1 * 3.0f;
 
 
@@ -61,7 +65,8 @@ public class LevelObjectController : MonoBehaviour {
         {
             anim.SetBool("isSpining", true);
             meshTransform.localScale = initScale0;
-            lockTransform.localScale = initScale1; 
+            lockTransform.localScale = initScale1;
+            lockTransform.position = initPosLock;
         }
 
         
@@ -114,6 +119,7 @@ public class LevelObjectController : MonoBehaviour {
             CancelInvoke("FadeOut");
             meshTransform.localScale = initScale0;
             lockTransform.localScale = initScale1;//reset to regular scale
+            lockTransform.position = initPosLock;
             highLighterTransform.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
