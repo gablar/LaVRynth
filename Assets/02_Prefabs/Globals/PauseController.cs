@@ -67,6 +67,7 @@ public class PauseController : MonoBehaviour {
 
         //disable platform interaction
         platforms.gameObject.SetActive(false);
+        GazeInputModuleCrosshair.DisplayCrosshair = false;
     }
 
     public void PauseGame()
@@ -92,5 +93,7 @@ public class PauseController : MonoBehaviour {
 
         //Enable platform interaction
         platforms.gameObject.SetActive(true);
+        GazeInputModuleCrosshair.DisplayCrosshair = true;
+
     }
 }
