@@ -60,13 +60,12 @@ public class PlatformController : MonoBehaviour {
     void Start() { }
 
     
-
     public void InitializePlatform()
     {
      if (isDefault && !isFirst)
         {
             FPSController.position = new Vector3(thisPosition.x,
-                                                        thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
+                                                        PlayerPrefs.GetFloat("CameraHeight"),
                                                         thisPosition.z);
             FPSController.eulerAngles = thisRotation;
             mesh.enabled = false;
@@ -75,10 +74,11 @@ public class PlatformController : MonoBehaviour {
         }
         else if (isDefault && isFirst)
         {
-            PlayerPrefs.SetFloat("CameraHeight", 0);
+            float height = thisPosition.y;
+            PlayerPrefs.SetFloat("CameraHeight", height);
             FPSController.position = new Vector3(thisPosition.x,
-                                            thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
-                                            thisPosition.z);
+                                                    height,
+                                                    thisPosition.z);
             FPSController.eulerAngles = thisRotation;
             isFirst = false;
             mesh.enabled = false;
@@ -89,9 +89,9 @@ public class PlatformController : MonoBehaviour {
     }
 
     public void ReinitializeCamera() {
-        PlayerPrefs.SetFloat("CameraHeight", 0);
+        //PlayerPrefs.SetFloat("CameraHeight", 0);
         FPSController.position = new Vector3(thisPosition.x,
-                                        thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
+                                        PlayerPrefs.GetFloat("CameraHeight"),
                                         thisPosition.z);
         FPSController.eulerAngles = thisRotation;
         isFirst = false;
@@ -147,7 +147,9 @@ public class PlatformController : MonoBehaviour {
         if (aValue >= 1)
         {   //change Camera to this platform
 
-            FPSController.position = new Vector3(thisPosition.x, thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"), thisPosition.z);
+            FPSController.position = new Vector3(thisPosition.x, 
+                                                        PlayerPrefs.GetFloat("CameraHeight"), 
+                                                        thisPosition.z);
             FPSController.eulerAngles = thisRotation;
 
             //turn off Menu and turn on mesh and coll in the prior Platform
