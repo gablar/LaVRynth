@@ -48,8 +48,9 @@ public class GazeInputModuleCrosshair : MonoBehaviour
 			float distance = CrosshairOriginalDistance;
 			if (gazeInputModule.CurrentRaycast.isValid)
 			{
-				distance = gazeInputModule.CurrentRaycast.distance * 0.8f - 0.5f;
-			}
+				//distance = gazeInputModule.CurrentRaycast.distance * 0.8f - 0.5f;
+                distance = gazeInputModule.CurrentRaycast.distance * 0.8f;
+            }
 			SetCrossHairAtDistance (distance);
 		}
 	}
