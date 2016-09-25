@@ -20,9 +20,11 @@ public class PlatformController : MonoBehaviour {
 
 
     MeshRenderer mesh;
+    BoxCollider bColl;
+    Transform text;
+
     public Material platform;
     public Material hPlatform;
-    BoxCollider bColl;
 
     public BaseControllerKong baseController;
     public int platformNumber;
@@ -34,6 +36,7 @@ public class PlatformController : MonoBehaviour {
     /*Child 0 = Camera Position
       Child 1 = Menu
       Child 2 = Mesh 
+      Child 2.0=text
       */
 
     void Awake() {
@@ -41,6 +44,8 @@ public class PlatformController : MonoBehaviour {
         thisRotation = transform.rotation.eulerAngles;
         mesh = transform.GetChild(2).GetComponent<MeshRenderer>();
         bColl = GetComponent<BoxCollider>();
+        text = transform.GetChild(2).GetChild(0);
+        
         initScale = transform.GetChild(2).localScale;
         spriteRend = fadeSprite.GetComponent<SpriteRenderer>();
         aSource = GetComponent<AudioSource>();
@@ -65,8 +70,10 @@ public class PlatformController : MonoBehaviour {
      if (isDefault && !isFirst)
         {
             MoveCamera();
+
             mesh.enabled = false;
             bColl.enabled = false;
+            text.gameObject.SetActive(false);
             // Debug.Log("Default platform initialized, Platform #" + platformNumber);
         }
         else if (isDefault && isFirst)
@@ -80,9 +87,11 @@ public class PlatformController : MonoBehaviour {
             isFirst = false;
             mesh.enabled = false;
             bColl.enabled = false;
+            text.gameObject.SetActive(false);
+
 
         }
-        
+
     }
 
     private void MoveCamera()
@@ -99,6 +108,8 @@ public class PlatformController : MonoBehaviour {
         isFirst = false;
         mesh.enabled = false;
         bColl.enabled = false;
+        text.gameObject.SetActive(false);
+
     }
 
     public void OnPointerEnter()
@@ -150,13 +161,14 @@ public class PlatformController : MonoBehaviour {
         {   //change Camera to this platform
             MoveCamera();
 
-            //turn off Menu and turn on mesh and coll in the prior Platform
+            //turn off Menu and turn on mesh, coll and text in the prior Platform
             Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1);
 
             //Debug.Log("Turn Off calling platform " + (baseController.platform));
             priorPlatform.GetChild(1).gameObject.SetActive(false);
             priorPlatform.GetChild(2).GetComponent<MeshRenderer>().enabled = true;
             priorPlatform.GetComponent<BoxCollider>().enabled = true;
+            priorPlatform.GetChild(2).GetChild(0).gameObject.SetActive(true);
 
 
 
@@ -168,6 +180,8 @@ public class PlatformController : MonoBehaviour {
 
             mesh.enabled = false;
             bColl.enabled = false;
+            text.gameObject.SetActive(false);
+
 
             //set Current Platform
             baseController.platform = platformNumber;
