@@ -21,4 +21,5 @@ public class CelebrationTextController : MonoBehaviour {
         transform.GetChild(1).gameObject.SetActive(true);
 
     }
+
 }
