@@ -4,7 +4,7 @@ using System.Collections;
 public class BreakableWall2 : MonoBehaviour {
 
     // Use this for initialization
-    float maxAccDam = 0.1f;
+    float maxAccDam = 1.0f;
     float accumulatedDamage = 0;
 
     MeshRenderer mRend;
@@ -25,18 +25,26 @@ public class BreakableWall2 : MonoBehaviour {
     {
         if (ball.gameObject.tag == "ball")
         {
-            accumulatedDamage += ball.impulse.magnitude;
 
             aSource.clip = breakedClip;
             aSource.Play();
             pS.Play();
+
+            if (transform.parent.localRotation.eulerAngles.y > 89.0f)
+                accumulatedDamage += Mathf.Abs(ball.rigidbody.velocity.x);
+            else
+                accumulatedDamage += Mathf.Abs(ball.rigidbody.velocity.z);
+
+            Debug.Log("Wall 2");
+            Debug.Log("Velocity of ball at impact =" + ball.rigidbody.velocity);
+            Debug.Log("accumulatedDamage = " + accumulatedDamage);
 
             if (accumulatedDamage >= maxAccDam)
             {
                 aSource.Play();
                 coll.enabled = false;
                 mRend.enabled = false;
-                Destroy(transform.parent.gameObject,.5f);
+                Destroy(gameObject,.5f);
             }
         }
     }

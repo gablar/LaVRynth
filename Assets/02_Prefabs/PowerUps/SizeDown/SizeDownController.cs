@@ -61,7 +61,7 @@ public class SizeDownController : MonoBehaviour {
         { 
             OnSizeDownEnds();
         }
-        Invoke("EnableSizeDown", 15);
+        Invoke("EnableSizeDown", 5);
     }
 
 }

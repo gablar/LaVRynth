@@ -48,7 +48,7 @@ public class StarController : MonoBehaviour {
             OnInmunityEnds();
         }
 
-        Invoke("EnableStar", 15);
+        Invoke("EnableStar", 5);
     }
 
     private void DisableStar()
