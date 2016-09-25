@@ -5,7 +5,7 @@ public class PlatformController : MonoBehaviour {
     private bool isPaused = true;
     public bool isDefault;
     public bool isFirst;
-    public bool isReturning = false;
+ 
     
 
     public Transform fadeSprite;
@@ -64,20 +64,17 @@ public class PlatformController : MonoBehaviour {
     {
      if (isDefault && !isFirst)
         {
-            FPSController.position = new Vector3(thisPosition.x,
-                                                        PlayerPrefs.GetFloat("CameraHeight"),
-                                                        thisPosition.z);
-            FPSController.eulerAngles = thisRotation;
+            MoveCamera();
             mesh.enabled = false;
             bColl.enabled = false;
             // Debug.Log("Default platform initialized, Platform #" + platformNumber);
         }
         else if (isDefault && isFirst)
         {
-            float height = thisPosition.y;
-            PlayerPrefs.SetFloat("CameraHeight", height);
+            
+            PlayerPrefs.SetFloat("CameraHeight", 0);
             FPSController.position = new Vector3(thisPosition.x,
-                                                    height,
+                                                    thisPosition.y,
                                                     thisPosition.z);
             FPSController.eulerAngles = thisRotation;
             isFirst = false;
@@ -88,12 +85,17 @@ public class PlatformController : MonoBehaviour {
         
     }
 
+    private void MoveCamera()
+    {
+        FPSController.position = new Vector3(thisPosition.x,
+                                                thisPosition.y + PlayerPrefs.GetFloat("CameraHeight"),
+                                                thisPosition.z);
+        FPSController.eulerAngles = thisRotation;
+    }
+
     public void ReinitializeCamera() {
         //PlayerPrefs.SetFloat("CameraHeight", 0);
-        FPSController.position = new Vector3(thisPosition.x,
-                                        PlayerPrefs.GetFloat("CameraHeight"),
-                                        thisPosition.z);
-        FPSController.eulerAngles = thisRotation;
+        MoveCamera();
         isFirst = false;
         mesh.enabled = false;
         bColl.enabled = false;
@@ -146,11 +148,7 @@ public class PlatformController : MonoBehaviour {
 
         if (aValue >= 1)
         {   //change Camera to this platform
-
-            FPSController.position = new Vector3(thisPosition.x, 
-                                                        PlayerPrefs.GetFloat("CameraHeight"), 
-                                                        thisPosition.z);
-            FPSController.eulerAngles = thisRotation;
+            MoveCamera();
 
             //turn off Menu and turn on mesh and coll in the prior Platform
             Transform priorPlatform = transform.parent.GetChild(baseController.platform - 1);

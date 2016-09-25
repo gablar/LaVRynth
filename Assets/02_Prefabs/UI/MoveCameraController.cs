@@ -8,7 +8,7 @@ public class MoveCameraController : MonoBehaviour {
     MeshRenderer mRend;
 
     public Transform cameraRig;
-    public float yMovement = 1;
+    float yMovement = 0.2f;
     public bool up;
     // Use this for initialization
     void Start()
@@ -34,15 +34,18 @@ public class MoveCameraController : MonoBehaviour {
         {
             float newHeight = PlayerPrefs.GetFloat("CameraHeight") + yMovement;
             PlayerPrefs.SetFloat("CameraHeight", newHeight);
+            Debug.Log("Went up " + newHeight);
             cameraRig.transform.position = new Vector3(cameraRig.transform.position.x,
-                                                        newHeight,
+                                                        cameraRig.transform.position.y + yMovement,
                                                         cameraRig.transform.position.z);
         }
         else {
             float newHeight = PlayerPrefs.GetFloat("CameraHeight") - yMovement;
             PlayerPrefs.SetFloat("CameraHeight", newHeight);
+            Debug.Log("Went down " + newHeight);
+
             cameraRig.transform.position = new Vector3(cameraRig.transform.position.x,
-                                                        newHeight,
+                                                        cameraRig.transform.position.y - yMovement,
                                                         cameraRig.transform.position.z);
         }
 

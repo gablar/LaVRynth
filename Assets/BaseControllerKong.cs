@@ -30,11 +30,11 @@ public class BaseControllerKong : MonoBehaviour {
                     }
                     x = transform.rotation.eulerAngles.x;
                     z = transform.rotation.eulerAngles.z;
-                    if (x < 340f && x > 20)
+                    if (x < 345f && x > 15)
                     {
                         x = initialRot.eulerAngles.x;
                     }
-                    if (z < 340f && z > 20)
+                    if (z < 345f && z > 15)
                     {
                         z = initialRot.eulerAngles.z;
                     }
@@ -59,11 +59,11 @@ public class BaseControllerKong : MonoBehaviour {
                     }
                     x = transform.rotation.eulerAngles.x;
                     z = transform.rotation.eulerAngles.z;
-                    if (x < 340f && x > 20)
+                    if (x < 345f && x > 15)
                     {
                         x = initialRot.eulerAngles.x;
                     }
-                    if (z < 340f && z > 20)
+                    if (z < 345f && z > 15)
                     {
                         z = initialRot.eulerAngles.z;
                     }
@@ -85,10 +85,10 @@ public class BaseControllerKong : MonoBehaviour {
                     }
                     x = transform.rotation.eulerAngles.x;
                     z = transform.rotation.eulerAngles.z;
-                    if (x < 340f && x > 20) {
+                    if (x < 345f && x > 15) {
                         x = initialRot.eulerAngles.x;
                     }
-                    if (z < 340f && z > 20)
+                    if (z < 345f && z > 15)
                     {
                         z = initialRot.eulerAngles.z;
                     }
@@ -115,11 +115,11 @@ public class BaseControllerKong : MonoBehaviour {
 
                     x = transform.rotation.eulerAngles.x;
                     z = transform.rotation.eulerAngles.z;
-                    if (x < 340f && x > 20)
+                    if (x < 345f && x > 15f)
                     {
                         x = initialRot.eulerAngles.x;
                     }
-                    if (z < 340f && z > 20)
+                    if (z < 345f && z > 15f)
                     {
                         z = initialRot.eulerAngles.z;
                     }

@@ -4,7 +4,7 @@ using System.Collections;
 public class BreakableWall2 : MonoBehaviour {
 
     // Use this for initialization
-    public float maxAccDam = 5;
+    float maxAccDam = 0.1f;
     float accumulatedDamage = 0;
 
     MeshRenderer mRend;
